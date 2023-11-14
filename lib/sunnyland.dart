@@ -29,13 +29,13 @@ class SunnyLand extends FlameGame with HasCollisionDetection {
     double mapWidth = 32.0 * myMap.tileMap.map.width;
     double mapHeight = 32.0 * myMap.tileMap.map.height;
     final ground = myMap.tileMap.getLayer<ObjectGroup>('collision');
-    final mur = myMap.tileMap.getLayer<ObjectGroup>('mur');
+    final wall = myMap.tileMap.getLayer<ObjectGroup>('mur');
     for (final obj in ground!.objects) {
       add(Ground(
           size: Vector2(obj.width, obj.height),
           position: Vector2(obj.x, obj.y)));
     }
-    for (final obj in mur!.objects) {
+    for (final obj in wall!.objects) {
       add(Wall(
           size: Vector2(obj.width, obj.height),
           position: Vector2(obj.x, obj.y)));

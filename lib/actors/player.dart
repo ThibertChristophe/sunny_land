@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:sunny_land/obstacles/ground.dart';
+import 'package:sunny_land/obstacles/wall.dart';
 import '../sunnyland.dart';
 
 enum FoxDirection { left, right, none }
@@ -32,7 +33,7 @@ class Player extends SpriteAnimationComponent
 
     add(runComponent);
 
-    add(RectangleHitbox());
+    add(CircleHitbox());
   }
 
   @override
@@ -58,6 +59,7 @@ class Player extends SpriteAnimationComponent
         velocity.x = 0 * moveSpeed;
         break;
     }
+
     if (horizontalDirection == FoxDirection.left && scale.x > 0) {
       flipHorizontally();
     } else if (horizontalDirection == FoxDirection.right && scale.x < 0) {
@@ -73,9 +75,20 @@ class Player extends SpriteAnimationComponent
       velocity.y = 0;
       onGround = true;
     }
-    // if (other is Wall) {
-    //   velocity.x = 0;
-    //   wallHited = true;
-    // }
+
+    if (other is Wall) {
+      if (intersectionPoints.length == 2) {
+        final mid = (intersectionPoints.elementAt(0) +
+                intersectionPoints.elementAt(1)) /
+            2;
+
+        final collisionVector = absoluteCenter - mid;
+        double penetrationDepth = (size.x / 2) - collisionVector.length;
+        print(collisionVector);
+        collisionVector.normalize();
+        print(collisionVector);
+        position += collisionVector.scaled(penetrationDepth);
+      }
+    }
   }
 }
