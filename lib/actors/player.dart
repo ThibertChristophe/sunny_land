@@ -8,10 +8,17 @@ import '../sunnyland.dart';
 
 enum FoxDirection { left, right, none }
 
-class Player extends SpriteAnimationComponent
+enum PlayerState {
+  running,
+  jumping,
+  falling,
+  idle,
+}
+
+class Player extends SpriteAnimationGroupComponent<PlayerState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
   Player({required super.position})
-      : super(size: Vector2.all(32), anchor: Anchor.center) {
+      : super(size: Vector2.all(33), anchor: Anchor.center) {
     debugMode = true;
   }
   double gravity = 1.2;
@@ -22,16 +29,42 @@ class Player extends SpriteAnimationComponent
   bool wallHited = false;
   @override
   void onLoad() async {
-    final SpriteSheet spriteSheet = SpriteSheet(
-        image: await Flame.images.load('player.png'), srcSize: Vector2.all(32));
-
-    final SpriteAnimation runAnimation = spriteSheet.createAnimation(
-        row: 1, stepTime: 0.1, from: 0, to: 6, loop: true);
-
-    final SpriteAnimationComponent runComponent = SpriteAnimationComponent(
-        animation: runAnimation, size: Vector2.all(32));
-
-    add(runComponent);
+    animations = {
+      PlayerState.running: await game.loadSpriteAnimation(
+        'run.png',
+        SpriteAnimationData.sequenced(
+          amount: 6,
+          textureSize: Vector2.all(33),
+          stepTime: 0.1,
+        ),
+      ),
+      PlayerState.jumping: await game.loadSpriteAnimation(
+        'jump.png',
+        SpriteAnimationData.sequenced(
+          amount: 2,
+          textureSize: Vector2.all(33),
+          stepTime: 0.1,
+        ),
+      ),
+      PlayerState.falling: await game.loadSpriteAnimation(
+        'hitted.png',
+        SpriteAnimationData.sequenced(
+          amount: 2,
+          textureSize: Vector2.all(33),
+          stepTime: 0.1,
+        ),
+      ),
+      PlayerState.idle: await game.loadSpriteAnimation(
+        'idle.png',
+        SpriteAnimationData.sequenced(
+          amount: 4,
+          textureSize: Vector2.all(33),
+          stepTime: 0.1,
+        ),
+      ),
+    };
+    // The starting state will be that the player is running.
+    current = PlayerState.idle;
 
     add(CircleHitbox());
   }
@@ -48,15 +81,19 @@ class Player extends SpriteAnimationComponent
     switch (horizontalDirection) {
       case FoxDirection.left:
         velocity.x = -1 * moveSpeed;
+        current = PlayerState.running;
         break;
       case FoxDirection.right:
         velocity.x = 1 * moveSpeed;
+        current = PlayerState.running;
         break;
       case FoxDirection.none:
         velocity.x = 0;
+        current = PlayerState.idle;
         break;
       default:
         velocity.x = 0 * moveSpeed;
+        current = PlayerState.idle;
         break;
     }
 

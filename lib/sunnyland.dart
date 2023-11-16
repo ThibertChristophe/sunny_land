@@ -26,8 +26,6 @@ class SunnyLand extends FlameGame with HasCollisionDetection {
     myMap = await TiledComponent.load("map1_1.tmx", Vector2.all(16));
     add(myMap);
 
-    double mapWidth = 32.0 * myMap.tileMap.map.width;
-    double mapHeight = 32.0 * myMap.tileMap.map.height;
     final ground = myMap.tileMap.getLayer<ObjectGroup>('collision');
     final wall = myMap.tileMap.getLayer<ObjectGroup>('mur');
     for (final obj in ground!.objects) {
@@ -40,11 +38,9 @@ class SunnyLand extends FlameGame with HasCollisionDetection {
           size: Vector2(obj.width, obj.height),
           position: Vector2(obj.x, obj.y)));
     }
-    cameraComponent = CameraComponent(world: world);
-    cameraComponent.viewport =
-        FixedResolutionViewport(resolution: Vector2(mapWidth, mapHeight));
+    cameraComponent =
+        CameraComponent.withFixedResolution(width: 1600, height: 720);
 
-    cameraComponent.viewfinder.anchor = Anchor.topLeft;
     addAll([cameraComponent, world]);
 
     fox = Player(position: Vector2(100, 0));
