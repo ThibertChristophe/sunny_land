@@ -72,6 +72,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   void update(double dt) {
     super.update(dt);
 
+    // Gravité
     if (!onGround) {
       velocity.y += gravity;
       position.y += velocity.y * dt;
