@@ -1,19 +1,12 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/flame.dart';
-import 'package:flame/sprite.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/wall.dart';
 import '../sunnyland.dart';
 
 enum FoxDirection { left, right, none }
 
-enum PlayerState {
-  running,
-  jumping,
-  falling,
-  idle,
-}
+enum PlayerState { running, jumping, falling, idle, hitted }
 
 class Player extends SpriteAnimationGroupComponent<PlayerState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
@@ -26,7 +19,13 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   double moveSpeed = 200;
   FoxDirection horizontalDirection = FoxDirection.none;
   bool onGround = false;
-  bool wallHited = false;
+
+  final double _jumpLength = 50;
+
+  bool get isFalling => _lastPosition.y < position.y;
+
+  Vector2 _lastPosition = Vector2.zero();
+
   @override
   void onLoad() async {
     animations = {
@@ -38,15 +37,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           stepTime: 0.1,
         ),
       ),
-      PlayerState.jumping: await game.loadSpriteAnimation(
-        'jump.png',
-        SpriteAnimationData.sequenced(
-          amount: 2,
-          textureSize: Vector2.all(33),
-          stepTime: 0.1,
-        ),
-      ),
-      PlayerState.falling: await game.loadSpriteAnimation(
+      PlayerState.hitted: await game.loadSpriteAnimation(
         'hitted.png',
         SpriteAnimationData.sequenced(
           amount: 2,
@@ -62,10 +53,18 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           stepTime: 0.1,
         ),
       ),
+      PlayerState.jumping: SpriteAnimation.spriteList(
+        [await game.loadSprite('jumping.png')],
+        stepTime: double.infinity,
+      ),
+      PlayerState.falling: SpriteAnimation.spriteList(
+        [await game.loadSprite('falling.png')],
+        stepTime: double.infinity,
+      ),
     };
-    // The starting state will be that the player is running.
-    current = PlayerState.idle;
 
+    current = PlayerState.idle;
+    _lastPosition.setFrom(position);
     add(CircleHitbox());
   }
 
@@ -81,19 +80,19 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     switch (horizontalDirection) {
       case FoxDirection.left:
         velocity.x = -1 * moveSpeed;
-        current = PlayerState.running;
+        if (onGround) current = PlayerState.running;
         break;
       case FoxDirection.right:
         velocity.x = 1 * moveSpeed;
-        current = PlayerState.running;
+        if (onGround) current = PlayerState.running;
         break;
       case FoxDirection.none:
         velocity.x = 0;
-        current = PlayerState.idle;
+        if (onGround) current = PlayerState.idle;
         break;
       default:
         velocity.x = 0 * moveSpeed;
-        current = PlayerState.idle;
+        if (onGround) current = PlayerState.idle;
         break;
     }
 
@@ -103,11 +102,13 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       flipHorizontally();
     }
     position += velocity * dt;
+    _lastPosition = position;
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
+    // On stop notre chute quand on est sur du Ground
     if (other is Ground) {
       velocity.y = 0;
       onGround = true;
@@ -121,11 +122,17 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
         final collisionVector = absoluteCenter - mid;
         double penetrationDepth = (size.x / 2) - collisionVector.length;
-        print(collisionVector);
-        collisionVector.normalize();
-        print(collisionVector);
+
+        collisionVector.normalize(); // rend le vector2(x,y) positif ou négatif
+
         position += collisionVector.scaled(penetrationDepth);
       }
     }
+  }
+
+  void jump() {
+    current = PlayerState.jumping;
+    onGround = false;
+    velocity.y -= _jumpLength;
   }
 }

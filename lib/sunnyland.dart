@@ -1,15 +1,15 @@
-import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/wall.dart';
-
+import 'package:flutter/material.dart';
 import 'actors/player.dart';
 
-class SunnyLand extends FlameGame with HasCollisionDetection {
+class SunnyLand extends FlameGame with TapCallbacks, HasCollisionDetection {
   SunnyLand();
   late JoystickComponent joystick; // Joystick
   late Player fox;
@@ -89,5 +89,13 @@ class SunnyLand extends FlameGame with HasCollisionDetection {
         fox.horizontalDirection = FoxDirection.none;
         break;
     }
+  }
+
+  /// [onTapDown] is called when the player taps the screen and then calculates
+  /// if and how the player should jump.
+  @override
+  void onTapDown(TapDownEvent event) {
+    print('jump');
+    if (fox.onGround) fox.jump();
   }
 }
