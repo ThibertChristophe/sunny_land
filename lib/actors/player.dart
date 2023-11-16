@@ -111,6 +111,18 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     super.onCollision(intersectionPoints, other);
     // On stop notre chute quand on est sur du Ground
     if (other is Ground) {
+      if (intersectionPoints.length == 2) {
+        final mid = (intersectionPoints.elementAt(0) +
+                intersectionPoints.elementAt(1)) /
+            2;
+
+        final collisionVector = absoluteCenter - mid;
+        double penetrationDepth = (size.x / 2) - collisionVector.length;
+
+        collisionVector.normalize(); // rend le vector2(x,y) positif ou négatif
+
+        position += collisionVector.scaled(penetrationDepth);
+      }
       velocity.y = 0;
       onGround = true;
     }
