@@ -24,24 +24,24 @@ class SunnyLand extends FlameGame
   Future<void> onLoad() async {
     await super.onLoad();
     addJoystick();
-    myMap = await TiledComponent.load("map1_1.tmx", Vector2.all(16));
+    myMap = await TiledComponent.load("map1-1.tmx", Vector2.all(16));
     add(myMap);
 
-    final ground = myMap.tileMap.getLayer<ObjectGroup>('collision');
-    final wall = myMap.tileMap.getLayer<ObjectGroup>('mur');
+    final ground = myMap.tileMap.getLayer<ObjectGroup>('terrain');
+    // final wall = myMap.tileMap.getLayer<ObjectGroup>('mur');
     for (final obj in ground!.objects) {
       add(Ground(
           size: Vector2(obj.width, obj.height),
           position: Vector2(obj.x, obj.y)));
     }
-    for (final obj in wall!.objects) {
-      add(Wall(
-          size: Vector2(obj.width, obj.height),
-          position: Vector2(obj.x, obj.y)));
-    }
+    // for (final obj in wall!.objects) {
+    // add(Wall(
+    //   size: Vector2(obj.width, obj.height),
+    // position: Vector2(obj.x, obj.y)));
+    //}
     cameraComponent =
         CameraComponent.withFixedResolution(width: 1600, height: 720);
-
+    cameraComponent.viewfinder.anchor = Anchor.bottomLeft;
     addAll([cameraComponent, world]);
 
     fox = Player(position: Vector2(100, 0));

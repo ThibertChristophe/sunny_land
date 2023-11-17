@@ -14,13 +14,13 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       : super(size: Vector2.all(33), anchor: Anchor.center) {
     debugMode = true;
   }
-  double gravity = 1.2;
+  double gravity = 1.5;
   Vector2 velocity = Vector2(0, 0);
   double moveSpeed = 200;
   FoxDirection horizontalDirection = FoxDirection.none;
   bool onGround = false;
 
-  final double _jumpLength = 50;
+  final double _jumpLength = 75;
 
   bool get isFalling => _lastPosition.y < position.y;
 
@@ -74,6 +74,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
     // Gravité
     if (!onGround) {
+      print('NOT GROUND');
       velocity.y += gravity;
       position.y += velocity.y * dt;
     }
@@ -81,20 +82,19 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     switch (horizontalDirection) {
       case FoxDirection.left:
         velocity.x = -1 * moveSpeed;
-        if (onGround) current = PlayerState.running;
         break;
       case FoxDirection.right:
         velocity.x = 1 * moveSpeed;
-        if (onGround) current = PlayerState.running;
         break;
       case FoxDirection.none:
-        velocity.x = 0;
-        if (onGround) current = PlayerState.idle;
-        break;
       default:
-        velocity.x = 0 * moveSpeed;
-        if (onGround) current = PlayerState.idle;
-        break;
+        velocity.x = 0;
+    }
+
+    if (onGround) {
+      current = (horizontalDirection == FoxDirection.none)
+          ? PlayerState.idle
+          : PlayerState.running;
     }
 
     if (horizontalDirection == FoxDirection.left && scale.x > 0) {
@@ -102,13 +102,16 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     } else if (horizontalDirection == FoxDirection.right && scale.x < 0) {
       flipHorizontally();
     }
+    // print(velocity.y);
     position += velocity * dt;
     _lastPosition = position;
+    onGround = false;
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
+
     // On stop notre chute quand on est sur du Ground
     if (other is Ground) {
       if (intersectionPoints.length == 2) {
@@ -123,11 +126,10 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
         position += collisionVector.scaled(penetrationDepth);
       }
+
       velocity.y = 0;
       onGround = true;
-    }
-
-    if (other is Wall) {
+    } else if (other is Wall) {
       if (intersectionPoints.length == 2) {
         final mid = (intersectionPoints.elementAt(0) +
                 intersectionPoints.elementAt(1)) /
@@ -146,6 +148,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   void jump() {
     current = PlayerState.jumping;
     onGround = false;
+
     velocity.y -= _jumpLength;
   }
 }
