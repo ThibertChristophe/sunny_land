@@ -14,7 +14,7 @@ class Platform extends PositionComponent with HasGameRef<SunnyLand> {
   @override
   void update(double dt) {
     super.update(dt);
-    ;
+
     if (game.fox.y + 15 < position.y) {
       active = true;
     } else {
