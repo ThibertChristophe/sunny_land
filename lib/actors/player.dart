@@ -74,7 +74,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
     // Gravité
     if (!onGround) {
-      print('NOT GROUND');
+      //print('NOT GROUND');
       velocity.y += gravity;
       position.y += velocity.y * dt;
     }
@@ -125,22 +125,25 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         collisionVector.normalize(); // rend le vector2(x,y) positif ou négatif
 
         position += collisionVector.scaled(penetrationDepth);
+        velocity.y = 0;
+        onGround = true;
       }
+    } else if (other is Platform) {
+      if (other.active) {
+        if (intersectionPoints.length == 2) {
+          final mid = (intersectionPoints.elementAt(0) +
+                  intersectionPoints.elementAt(1)) /
+              2;
 
-      velocity.y = 0;
-      onGround = true;
-    } else if (other is Wall) {
-      if (intersectionPoints.length == 2) {
-        final mid = (intersectionPoints.elementAt(0) +
-                intersectionPoints.elementAt(1)) /
-            2;
+          final collisionVector = absoluteCenter - mid;
+          double penetrationDepth = (size.x / 2) - collisionVector.length;
 
-        final collisionVector = absoluteCenter - mid;
-        double penetrationDepth = (size.x / 2) - collisionVector.length;
+          collisionVector
+              .normalize(); // rend le vector2(x,y) positif ou négatif
 
-        collisionVector.normalize(); // rend le vector2(x,y) positif ou négatif
-
-        position += collisionVector.scaled(penetrationDepth);
+          position += collisionVector.scaled(penetrationDepth);
+          onGround = true;
+        }
       }
     }
   }
