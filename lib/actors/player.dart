@@ -149,6 +149,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       }
     } else if (other is Platform) {
       if (other.active) {
+        // Si la plate forme est active (le joueur est au dessus) alors on active les collisions
         if (intersectionPoints.length == 2) {
           final mid = (intersectionPoints.elementAt(0) +
                   intersectionPoints.elementAt(1)) /
