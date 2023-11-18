@@ -1,12 +1,12 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:sunny_land/obstacles/ground.dart';
-import 'package:sunny_land/obstacles/wall.dart';
+import 'package:sunny_land/obstacles/platform.dart';
 import '../sunnyland.dart';
 
-enum FoxDirection { left, right, none }
+enum FoxDirection { left, right, none, down }
 
-enum PlayerState { running, jumping, falling, idle, hitted }
+enum PlayerState { running, jumping, falling, idle, hitted, sit }
 
 class Player extends SpriteAnimationGroupComponent<PlayerState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
@@ -18,6 +18,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   Vector2 velocity = Vector2(0, 0);
   double moveSpeed = 200;
   FoxDirection horizontalDirection = FoxDirection.none;
+  FoxDirection verticalDirection = FoxDirection.none;
   bool onGround = false;
 
   final double _jumpLength = 75;
@@ -53,6 +54,15 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           stepTime: 0.1,
         ),
       ),
+      PlayerState.sit: await game.loadSpriteAnimation(
+        'down.png',
+        SpriteAnimationData.sequenced(
+          amount: 3,
+          textureSize: Vector2.all(33),
+          stepTime: 0.1,
+          loop: false,
+        ),
+      ),
       PlayerState.jumping: SpriteAnimation.spriteList(
         [await game.loadSprite('jumping.png')],
         stepTime: double.infinity,
@@ -79,22 +89,28 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       position.y += velocity.y * dt;
     }
 
-    switch (horizontalDirection) {
-      case FoxDirection.left:
-        velocity.x = -1 * moveSpeed;
-        break;
-      case FoxDirection.right:
-        velocity.x = 1 * moveSpeed;
-        break;
-      case FoxDirection.none:
-      default:
-        velocity.x = 0;
+    if (verticalDirection == FoxDirection.none) {
+      switch (horizontalDirection) {
+        case FoxDirection.left:
+          velocity.x = -1 * moveSpeed;
+          break;
+        case FoxDirection.right:
+          velocity.x = 1 * moveSpeed;
+          break;
+        case FoxDirection.none:
+        default:
+          velocity.x = 0;
+      }
     }
 
     if (onGround) {
-      current = (horizontalDirection == FoxDirection.none)
-          ? PlayerState.idle
-          : PlayerState.running;
+      if (verticalDirection == FoxDirection.down) {
+        current = PlayerState.sit;
+      } else {
+        current = (horizontalDirection == FoxDirection.none)
+            ? PlayerState.idle
+            : PlayerState.running;
+      }
     }
 
     if (horizontalDirection == FoxDirection.left && scale.x > 0) {
@@ -103,9 +119,12 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       flipHorizontally();
     }
     // print(velocity.y);
-    position += velocity * dt;
+    if (verticalDirection == FoxDirection.none) {
+      position += velocity * dt;
+    }
     _lastPosition = position;
-    onGround = false;
+    onGround =
+        false; // force le fait qu'on est par défaut en chute libre pour detecter quand on quitte le sol pour tomber
   }
 
   @override

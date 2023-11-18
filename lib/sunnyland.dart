@@ -4,8 +4,9 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/obstacles/ground.dart';
-import 'package:sunny_land/obstacles/wall.dart';
+import 'package:sunny_land/obstacles/platform.dart';
 import 'package:flutter/material.dart';
 import 'actors/player.dart';
 
@@ -14,6 +15,7 @@ class SunnyLand extends FlameGame
   SunnyLand();
   late JoystickComponent joystick; // Joystick
   late Player fox;
+  late Frog frog;
 
   late TiledComponent myMap;
   @override
@@ -45,7 +47,9 @@ class SunnyLand extends FlameGame
     addAll([cameraComponent, world]);
 
     fox = Player(position: Vector2(100, 0));
+    frog = Frog(position: Vector2(200, 0));
     add(fox);
+    add(frog);
   }
 
   @override
@@ -76,17 +80,24 @@ class SunnyLand extends FlameGame
 
   void updateJoystick() {
     switch (joystick.direction) {
+      case JoystickDirection.down:
+        fox.verticalDirection = FoxDirection.down;
+        fox.horizontalDirection = FoxDirection.none;
+        break;
       case JoystickDirection.downLeft:
       case JoystickDirection.upLeft:
       case JoystickDirection.left:
         fox.horizontalDirection = FoxDirection.left;
+        fox.verticalDirection = FoxDirection.none;
         break;
       case JoystickDirection.downRight:
       case JoystickDirection.upRight:
       case JoystickDirection.right:
         fox.horizontalDirection = FoxDirection.right;
+        fox.verticalDirection = FoxDirection.none;
         break;
       default:
+        fox.verticalDirection = FoxDirection.none;
         fox.horizontalDirection = FoxDirection.none;
         break;
     }

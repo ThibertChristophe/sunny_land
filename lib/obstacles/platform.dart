@@ -9,6 +9,7 @@ class Platform extends PositionComponent with HasGameRef<SunnyLand> {
       : super(size: size, position: position) {
     debugMode = true;
   }
+
   bool active = false;
 
   @override
