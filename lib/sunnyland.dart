@@ -5,6 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sunny_land/actors/frog.dart';
+import 'package:sunny_land/objects/cherry.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class SunnyLand extends FlameGame
   late JoystickComponent joystick; // Joystick
   late Player fox;
   late Frog frog;
+  late Cherry cherry;
 
   late TiledComponent myMap;
   @override
@@ -47,9 +49,11 @@ class SunnyLand extends FlameGame
     addAll([cameraComponent, world]);
 
     fox = Player(position: Vector2(100, 0));
-    frog = Frog(position: Vector2(200, 0));
+    cherry = Cherry(position: Vector2(200, 150));
+    // frog = Frog(position: Vector2(200, 0));
+    // add(fox);
+    add(cherry);
     add(fox);
-    add(frog);
   }
 
   @override

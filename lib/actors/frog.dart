@@ -11,7 +11,7 @@ enum FrogState { idle }
 class Frog extends SpriteAnimationGroupComponent<FrogState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
   Frog({required super.position})
-      : super(size: Vector2.all(32), anchor: Anchor.center) {
+      : super(size: Vector2.all(34), anchor: Anchor.bottomLeft) {
     debugMode = true;
   }
   double gravity = 1.5;
