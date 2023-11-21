@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:sunny_land/objects/cherry.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
 import '../sunnyland.dart';
@@ -12,7 +13,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
   Player({required super.position})
       : super(size: Vector2.all(33), anchor: Anchor.center) {
-    debugMode = true;
+    //debugMode = true;
   }
   double gravity = 1.5;
   Vector2 velocity = Vector2(0, 0);
@@ -164,6 +165,11 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           position += collisionVector.scaled(penetrationDepth);
           onGround = true;
         }
+      }
+    }
+    if (other is Cherry) {
+      if (intersectionPoints.length == 2) {
+        other.hitted();
       }
     }
   }

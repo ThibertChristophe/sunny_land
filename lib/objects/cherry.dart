@@ -1,35 +1,59 @@
+import 'dart:async';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
-import 'package:flame/flame.dart';
-import 'package:flame/sprite.dart';
-import '../sunnyland.dart';
+import 'package:sunny_land/sunnyland.dart';
 
-enum CherryState { idle }
+enum CherryState { idle, hit }
 
 class Cherry extends SpriteAnimationGroupComponent<CherryState>
-    with CollisionCallbacks, HasGameRef<SunnyLand> {
-  Cherry({required super.position})
-      : super(size: Vector2.all(21), anchor: Anchor.bottomLeft) {
-    //debugMode = true;
+    with HasGameRef<SunnyLand> {
+  Cherry({required size, required position})
+      : super(size: size, position: position, anchor: Anchor.topCenter) {
+    // debugMode = true;
+  }
+
+  bool isHitted = false;
+  late Timer countdown;
+  @override
+  void update(double dt) async {
+    super.update(dt);
+    if (isHitted) {
+      current = CherryState.hit;
+      countdown.update(dt);
+      if (countdown.finished) {
+        removeFromParent();
+      }
+    }
   }
 
   @override
-  void onLoad() async {
+  FutureOr<void> onLoad() async {
     animations = {
       CherryState.idle: await game.loadSpriteAnimation(
         'cherry.png',
         SpriteAnimationData.sequenced(
+          amount: 4,
+          textureSize: Vector2.all(20),
+          stepTime: 0.25,
+        ),
+      ),
+      CherryState.hit: await game.loadSpriteAnimation(
+        'item-feedback.png',
+        SpriteAnimationData.sequenced(
           amount: 5,
-          textureSize: Vector2.all(21),
-          stepTime: 0.2,
+          textureSize: Vector2.all(33),
+          stepTime: 0.15,
         ),
       ),
     };
-    final ec = ReverseLinearEffectController(1);
-
     current = CherryState.idle;
-
     add(CircleHitbox());
+    return super.onLoad();
+  }
+
+  void hitted() {
+    isHitted = true;
+    countdown = Timer(0.55);
   }
 }
