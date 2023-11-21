@@ -13,11 +13,11 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
   Player({required super.position})
       : super(size: Vector2.all(33), anchor: Anchor.center) {
-    //debugMode = true;
+    debugMode = true;
   }
   double gravity = 5;
   Vector2 velocity = Vector2(0, 0);
-  double moveSpeed = 200;
+  double moveSpeed = 180;
   FoxDirection horizontalDirection = FoxDirection.none;
   FoxDirection verticalDirection = FoxDirection.none;
   bool onGround = false;

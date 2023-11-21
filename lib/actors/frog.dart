@@ -6,12 +6,12 @@ import '../sunnyland.dart';
 
 enum FrogDirection { left, right, none }
 
-enum FrogState { idle }
+enum FrogState { idle, jump }
 
 class Frog extends SpriteAnimationGroupComponent<FrogState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
   Frog({required super.position})
-      : super(size: Vector2.all(34), anchor: Anchor.bottomLeft) {
+      : super(size: Vector2.all(27), anchor: Anchor.center) {
     debugMode = true;
   }
   double gravity = 1.5;
@@ -25,10 +25,18 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
   void onLoad() async {
     animations = {
       FrogState.idle: await game.loadSpriteAnimation(
-        'frog-idle.png',
+        'frog-idle2.png',
         SpriteAnimationData.sequenced(
           amount: 4,
-          textureSize: Vector2.all(34),
+          textureSize: Vector2(35, 27),
+          stepTime: 0.5,
+        ),
+      ),
+      FrogState.jump: await game.loadSpriteAnimation(
+        'frog-jump.png',
+        SpriteAnimationData.sequenced(
+          amount: 3,
+          textureSize: Vector2(35, 27),
           stepTime: 0.5,
         ),
       ),
@@ -57,6 +65,7 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
     }
 
     position += velocity * dt;
+    onGround = false;
   }
 
   @override

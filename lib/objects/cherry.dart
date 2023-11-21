@@ -54,6 +54,6 @@ class Cherry extends SpriteAnimationGroupComponent<CherryState>
 
   void hitted() {
     isHitted = true;
-    countdown = Timer(0.55);
+    countdown = Timer(0.45);
   }
 }

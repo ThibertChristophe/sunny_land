@@ -55,11 +55,10 @@ class SunnyLand extends FlameGame
     addAll([cameraComponent, world]);
 
     fox = Player(position: Vector2(100, 0));
-
-    // frog = Frog(position: Vector2(200, 0));
-    // add(fox);
-
     add(fox);
+
+    frog = Frog(position: Vector2(200, 0));
+    add(frog);
   }
 
   @override
