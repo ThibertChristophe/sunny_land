@@ -15,14 +15,14 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       : super(size: Vector2.all(33), anchor: Anchor.center) {
     //debugMode = true;
   }
-  double gravity = 1.5;
+  double gravity = 5;
   Vector2 velocity = Vector2(0, 0);
   double moveSpeed = 200;
   FoxDirection horizontalDirection = FoxDirection.none;
   FoxDirection verticalDirection = FoxDirection.none;
   bool onGround = false;
 
-  final double _jumpLength = 75;
+  final double _jumpLength = 140;
 
   bool get isFalling => _lastPosition.y < position.y;
 
@@ -142,7 +142,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         final collisionVector = absoluteCenter - mid;
         double penetrationDepth = (size.x / 2) - collisionVector.length;
 
-        collisionVector.normalize(); // rend le vector2(x,y) positif ou négatif
+        collisionVector.normalize();
 
         position += collisionVector.scaled(penetrationDepth);
         velocity.y = 0;
@@ -159,10 +159,10 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           final collisionVector = absoluteCenter - mid;
           double penetrationDepth = (size.x / 2) - collisionVector.length;
 
-          collisionVector
-              .normalize(); // rend le vector2(x,y) positif ou négatif
+          collisionVector.normalize();
 
           position += collisionVector.scaled(penetrationDepth);
+          velocity.y = 0;
           onGround = true;
         }
       }
