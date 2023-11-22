@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 
 import '../sunnyland.dart';
@@ -11,15 +12,15 @@ enum FrogState { idle, jump }
 class Frog extends SpriteAnimationGroupComponent<FrogState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
   Frog({required super.position})
-      : super(size: Vector2.all(27), anchor: Anchor.center) {
+      : super(size: Vector2.all(32), anchor: Anchor.center) {
     debugMode = true;
   }
   double gravity = 1.5;
   Vector2 velocity = Vector2(0, 0);
   double moveSpeed = 200;
   FrogDirection horizontalDirection = FrogDirection.none;
-
   bool onGround = false;
+  bool hasJumped = false;
 
   @override
   void onLoad() async {
@@ -33,18 +34,24 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
         ),
       ),
       FrogState.jump: await game.loadSpriteAnimation(
-        'frog-jump.png',
+        'frog-jump2.png',
         SpriteAnimationData.sequenced(
-          amount: 3,
-          textureSize: Vector2(35, 27),
-          stepTime: 0.5,
+          amount: 2,
+          textureSize: Vector2(35, 32),
+          stepTime: 0.75,
         ),
       ),
     };
-
     current = FrogState.idle;
 
     add(CircleHitbox());
+
+    final effect = MoveEffect.by(
+      Vector2(-20, -100),
+      RepeatedEffectController(
+          EffectController(duration: 1, startDelay: 2, atMaxDuration: 2), 5),
+    );
+    add(effect);
   }
 
   @override
@@ -63,9 +70,8 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
     } else if (horizontalDirection == FrogDirection.right && scale.x < 0) {
       flipHorizontally();
     }
-
-    position += velocity * dt;
     onGround = false;
+    position += velocity * dt;
   }
 
   @override
@@ -75,16 +81,16 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
     // On stop notre chute quand on est sur du Ground
     if (other is Ground) {
       if (intersectionPoints.length == 2) {
-        final mid = (intersectionPoints.elementAt(0) +
-                intersectionPoints.elementAt(1)) /
-            2;
+        // final mid = (intersectionPoints.elementAt(0) +
+        //         intersectionPoints.elementAt(1)) /
+        //     2;
 
-        final collisionVector = absoluteCenter - mid;
-        double penetrationDepth = (size.x / 2) - collisionVector.length;
+        // final collisionVector = absoluteCenter - mid;
+        // double penetrationDepth = (size.x / 2) - collisionVector.length;
 
-        collisionVector.normalize(); // rend le vector2(x,y) positif ou négatif
+        // collisionVector.normalize(); // rend le vector2(x,y) positif ou négatif
 
-        position += collisionVector.scaled(penetrationDepth);
+        // position += collisionVector.scaled(penetrationDepth);
         velocity.y = 0;
         onGround = true;
       }

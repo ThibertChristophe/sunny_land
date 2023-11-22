@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/objects/cherry.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
@@ -170,6 +171,11 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     if (other is Cherry) {
       if (intersectionPoints.length == 2) {
         other.hitted();
+      }
+    }
+    if (other is Frog) {
+      if (intersectionPoints.length == 2) {
+        current = PlayerState.hitted;
       }
     }
   }

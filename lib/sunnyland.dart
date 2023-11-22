@@ -54,10 +54,10 @@ class SunnyLand extends FlameGame
     cameraComponent.viewfinder.anchor = Anchor.bottomLeft;
     addAll([cameraComponent, world]);
 
-    fox = Player(position: Vector2(100, 0));
+    fox = Player(position: Vector2(100, 150));
     add(fox);
 
-    frog = Frog(position: Vector2(200, 0));
+    frog = Frog(position: Vector2(300, 150));
     add(frog);
   }
 

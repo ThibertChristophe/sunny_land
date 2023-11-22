@@ -20,6 +20,7 @@ class Cherry extends SpriteAnimationGroupComponent<CherryState>
     super.update(dt);
     if (isHitted) {
       current = CherryState.hit;
+
       countdown.update(dt);
       if (countdown.finished) {
         removeFromParent();
