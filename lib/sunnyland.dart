@@ -34,6 +34,8 @@ class SunnyLand extends FlameGame
     final ground = myMap.tileMap.getLayer<ObjectGroup>('ground');
     final platform = myMap.tileMap.getLayer<ObjectGroup>('platform');
     final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
+    final player = myMap.tileMap.getLayer<ObjectGroup>('player');
+    final frogs = myMap.tileMap.getLayer<ObjectGroup>('frogs');
     for (final obj in ground!.objects) {
       add(Ground(
           size: Vector2(obj.width, obj.height),
@@ -49,16 +51,23 @@ class SunnyLand extends FlameGame
           size: Vector2(obj.width, obj.height),
           position: Vector2(obj.x, obj.y)));
     }
+    for (final obj in player!.objects) {
+      add(fox = Player(position: Vector2(obj.x, obj.y)));
+    }
+    for (final obj in frogs!.objects) {
+      add(Frog(position: Vector2(obj.x, obj.y)));
+    }
     cameraComponent =
         CameraComponent.withFixedResolution(width: 1600, height: 720);
     cameraComponent.viewfinder.anchor = Anchor.bottomLeft;
+
     addAll([cameraComponent, world]);
 
-    fox = Player(position: Vector2(100, 150));
-    add(fox);
+    // fox = Player(position: Vector2(100, 150));
+    // add(fox);
 
-    frog = Frog(position: Vector2(300, 150));
-    add(frog);
+    // frog = Frog(position: Vector2(300, 150));
+    // add(frog);
   }
 
   @override

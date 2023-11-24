@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/objects/cherry.dart';
 import 'package:sunny_land/obstacles/ground.dart';
@@ -22,6 +23,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   FoxDirection horizontalDirection = FoxDirection.none;
   FoxDirection verticalDirection = FoxDirection.none;
   bool onGround = false;
+  final double jumpSpeed = 600;
+  final double terminalVelocity = 150;
 
   final double _jumpLength = 140;
 
@@ -86,7 +89,6 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
     // Gravité
     if (!onGround) {
-      //print('NOT GROUND');
       velocity.y += gravity;
       position.y += velocity.y * dt;
     }
@@ -114,6 +116,9 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             : PlayerState.running;
       }
     }
+    // Prevent from jumping to crazy fast as well as descending too fast and
+    // crashing through the ground or a platform.
+    velocity.y = velocity.y.clamp(-jumpSpeed, terminalVelocity);
 
     if (horizontalDirection == FoxDirection.left && scale.x > 0) {
       flipHorizontally();
@@ -139,7 +144,6 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         final mid = (intersectionPoints.elementAt(0) +
                 intersectionPoints.elementAt(1)) /
             2;
-
         final collisionVector = absoluteCenter - mid;
         double penetrationDepth = (size.x / 2) - collisionVector.length;
 
@@ -175,6 +179,33 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     }
     if (other is Frog) {
       if (intersectionPoints.length == 2) {
+        double temp = other.position.y - other.size.y;
+        if (intersectionPoints.last.y < temp) {
+          print('HAUT');
+        }
+
+        if (intersectionPoints.first.x < other.position.x) {
+          add(SequenceEffect([
+            MoveEffect.by(
+              Vector2(-1, -2),
+              EffectController(
+                duration: 0.2,
+                repeatCount: 2,
+              ),
+            ),
+          ]));
+        }
+        if (intersectionPoints.first.x > other.position.x) {
+          add(SequenceEffect([
+            MoveEffect.by(
+              Vector2(1, -2),
+              EffectController(
+                duration: 0.2,
+                repeatCount: 2,
+              ),
+            ),
+          ]));
+        }
         current = PlayerState.hitted;
       }
     }

@@ -1,6 +1,5 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 
 import '../sunnyland.dart';
@@ -15,12 +14,16 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
       : super(size: Vector2.all(32), anchor: Anchor.center) {
     debugMode = true;
   }
+  late Timer interval;
+
   double gravity = 1.5;
   Vector2 velocity = Vector2(0, 0);
   double moveSpeed = 200;
   FrogDirection horizontalDirection = FrogDirection.none;
   bool onGround = false;
   bool hasJumped = false;
+  final double _jumpLength = 50;
+  int nbJump = 0;
 
   @override
   void onLoad() async {
@@ -36,9 +39,9 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
       FrogState.jump: await game.loadSpriteAnimation(
         'frog-jump2.png',
         SpriteAnimationData.sequenced(
-          amount: 2,
+          amount: 1,
           textureSize: Vector2(35, 32),
-          stepTime: 0.75,
+          stepTime: 1,
         ),
       ),
     };
@@ -46,25 +49,25 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
 
     add(CircleHitbox());
 
-    final effect = MoveEffect.by(
-      Vector2(-20, -100),
-      RepeatedEffectController(
-          EffectController(duration: 1, startDelay: 2, atMaxDuration: 2), 5),
+    interval = Timer(
+      6,
+      onTick: () => jump(),
+      repeat: true,
     );
-    add(effect);
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-
+    interval.update(dt);
     // Gravité
     if (!onGround) {
-      //print('NOT GROUND');
       velocity.y += gravity;
       position.y += velocity.y * dt;
     }
-
+    if (onGround) {
+      current = FrogState.idle;
+    }
     if (horizontalDirection == FrogDirection.left && scale.x > 0) {
       flipHorizontally();
     } else if (horizontalDirection == FrogDirection.right && scale.x < 0) {
@@ -81,19 +84,35 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
     // On stop notre chute quand on est sur du Ground
     if (other is Ground) {
       if (intersectionPoints.length == 2) {
-        // final mid = (intersectionPoints.elementAt(0) +
-        //         intersectionPoints.elementAt(1)) /
-        //     2;
+        final mid = (intersectionPoints.elementAt(0) +
+                intersectionPoints.elementAt(1)) /
+            2;
 
-        // final collisionVector = absoluteCenter - mid;
-        // double penetrationDepth = (size.x / 2) - collisionVector.length;
+        final collisionVector = absoluteCenter - mid;
+        double penetrationDepth = (size.x / 2) - collisionVector.length;
 
-        // collisionVector.normalize(); // rend le vector2(x,y) positif ou négatif
+        collisionVector.normalize();
 
-        // position += collisionVector.scaled(penetrationDepth);
+        position += collisionVector.scaled(penetrationDepth);
         velocity.y = 0;
+        velocity.x = 0;
         onGround = true;
       }
     }
+  }
+
+  void jump() {
+    current = FrogState.jump;
+    onGround = false;
+
+    velocity.y -= _jumpLength;
+    if (nbJump % 3 == 0) {
+      velocity.x -= 50;
+      horizontalDirection = FrogDirection.right;
+    } else {
+      velocity.x += 50;
+      horizontalDirection = FrogDirection.left;
+    }
+    nbJump++;
   }
 }

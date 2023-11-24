@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="4">
+<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="6">
  <tileset firstgid="1" name="back" tilewidth="16" tileheight="16" tilecount="360" columns="24">
   <image source="back.png" width="384" height="240"/>
  </tileset>
@@ -253,4 +253,10 @@
 439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,543,439,439,439,439,543,439,439,439,439,439,439,439,439,439,439,439,439,439,439,439,543,439,439,439,439,543,439
 </data>
  </layer>
+ <objectgroup id="10" name="player">
+  <object id="4" x="86.6364" y="203.455" width="33" height="35"/>
+ </objectgroup>
+ <objectgroup id="11" name="frogs">
+  <object id="5" x="266.909" y="206.182" width="31" height="33"/>
+ </objectgroup>
 </map>
