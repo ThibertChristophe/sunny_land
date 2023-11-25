@@ -19,7 +19,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   }
   double gravity = 5;
   Vector2 velocity = Vector2(0, 0);
-  double moveSpeed = 180;
+  double moveSpeed = 160;
   FoxDirection horizontalDirection = FoxDirection.none;
   FoxDirection verticalDirection = FoxDirection.none;
   bool onGround = false;
@@ -28,9 +28,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
   final double _jumpLength = 140;
 
-  bool get isFalling => _lastPosition.y < position.y;
-
-  Vector2 _lastPosition = Vector2.zero();
+  bool isFalling = false;
 
   @override
   void onLoad() async {
@@ -79,7 +77,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     };
 
     current = PlayerState.idle;
-    _lastPosition.setFrom(position);
+
     add(CircleHitbox());
   }
 
@@ -108,6 +106,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     }
 
     if (onGround) {
+      isFalling = false;
       if (verticalDirection == FoxDirection.down) {
         current = PlayerState.sit;
       } else {
@@ -115,6 +114,9 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             ? PlayerState.idle
             : PlayerState.running;
       }
+    } else if (velocity.y > 5) {
+      current = PlayerState.falling;
+      isFalling = true;
     }
     // Prevent from jumping to crazy fast as well as descending too fast and
     // crashing through the ground or a platform.
@@ -129,7 +131,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     if (verticalDirection == FoxDirection.none) {
       position += velocity * dt;
     }
-    _lastPosition = position;
+
     onGround =
         false; // force le fait qu'on est par défaut en chute libre pour detecter quand on quitte le sol pour tomber
   }
@@ -178,35 +180,49 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       }
     }
     if (other is Frog) {
-      if (intersectionPoints.length == 2) {
-        double temp = other.position.y - other.size.y;
-        if (intersectionPoints.last.y < temp) {
-          print('HAUT');
-        }
+      if (!other.dead) {
+        if (intersectionPoints.length == 2) {
+          if (isFalling &&
+              (position.y < (other.position.y - (other.size.y / 2)))) {
+            final mid = (intersectionPoints.elementAt(0) +
+                    intersectionPoints.elementAt(1)) /
+                2;
 
-        if (intersectionPoints.first.x < other.position.x) {
-          add(SequenceEffect([
-            MoveEffect.by(
-              Vector2(-1, -2),
-              EffectController(
-                duration: 0.2,
-                repeatCount: 2,
-              ),
-            ),
-          ]));
+            final collisionVector = absoluteCenter - mid;
+            double penetrationDepth = (size.x / 2) - collisionVector.length;
+
+            collisionVector.normalize();
+
+            position += collisionVector.scaled(penetrationDepth);
+            jump();
+
+            other.die();
+          } else {
+            current = PlayerState.hitted;
+            if (intersectionPoints.first.x < other.position.x) {
+              add(SequenceEffect([
+                MoveEffect.by(
+                  Vector2(-1, -1),
+                  EffectController(
+                    duration: 0.1,
+                    repeatCount: 1,
+                  ),
+                ),
+              ]));
+            }
+            if (intersectionPoints.first.x > other.position.x) {
+              add(SequenceEffect([
+                MoveEffect.by(
+                  Vector2(1, -1),
+                  EffectController(
+                    duration: 0.1,
+                    repeatCount: 1,
+                  ),
+                ),
+              ]));
+            }
+          }
         }
-        if (intersectionPoints.first.x > other.position.x) {
-          add(SequenceEffect([
-            MoveEffect.by(
-              Vector2(1, -2),
-              EffectController(
-                duration: 0.2,
-                repeatCount: 2,
-              ),
-            ),
-          ]));
-        }
-        current = PlayerState.hitted;
       }
     }
   }
