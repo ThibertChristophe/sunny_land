@@ -4,6 +4,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sunny_land/actors/eagle.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/objects/cherry.dart';
@@ -63,7 +64,7 @@ class SunnyLand extends FlameGame
     }
 
     add(Oposum(position: Vector2(400, 100)));
-
+    add(Eagle(position: Vector2(600, 100)));
     cameraComponent =
         CameraComponent.withFixedResolution(width: 1600, height: 720);
     //cameraComponent.viewfinder.anchor = Anchor.bottomLeft;
