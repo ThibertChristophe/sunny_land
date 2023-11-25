@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:sunny_land/actors/frog.dart';
+import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/objects/cherry.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
@@ -15,7 +16,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
   Player({required super.position})
       : super(size: Vector2.all(33), anchor: Anchor.center) {
-    debugMode = true;
+    //debugMode = true;
   }
   double gravity = 5;
   Vector2 velocity = Vector2(0, 0);
@@ -118,6 +119,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       current = PlayerState.falling;
       isFalling = true;
     }
+
     // Prevent from jumping to crazy fast as well as descending too fast and
     // crashing through the ground or a platform.
     velocity.y = velocity.y.clamp(-jumpSpeed, terminalVelocity);
@@ -180,6 +182,52 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       }
     }
     if (other is Frog) {
+      if (!other.dead) {
+        if (intersectionPoints.length == 2) {
+          if (isFalling &&
+              (position.y < (other.position.y - (other.size.y / 2)))) {
+            final mid = (intersectionPoints.elementAt(0) +
+                    intersectionPoints.elementAt(1)) /
+                2;
+
+            final collisionVector = absoluteCenter - mid;
+            double penetrationDepth = (size.x / 2) - collisionVector.length;
+
+            collisionVector.normalize();
+
+            position += collisionVector.scaled(penetrationDepth);
+            jump();
+
+            other.die();
+          } else {
+            current = PlayerState.hitted;
+            if (intersectionPoints.first.x < other.position.x) {
+              add(SequenceEffect([
+                MoveEffect.by(
+                  Vector2(-1, -1),
+                  EffectController(
+                    duration: 0.1,
+                    repeatCount: 1,
+                  ),
+                ),
+              ]));
+            }
+            if (intersectionPoints.first.x > other.position.x) {
+              add(SequenceEffect([
+                MoveEffect.by(
+                  Vector2(1, -1),
+                  EffectController(
+                    duration: 0.1,
+                    repeatCount: 1,
+                  ),
+                ),
+              ]));
+            }
+          }
+        }
+      }
+    }
+    if (other is Oposum) {
       if (!other.dead) {
         if (intersectionPoints.length == 2) {
           if (isFalling &&

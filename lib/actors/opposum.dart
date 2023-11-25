@@ -5,41 +5,39 @@ import 'package:sunny_land/obstacles/ground.dart';
 
 import '../sunnyland.dart';
 
-enum FrogDirection { left, right, none }
+enum OposumDirection { left, right, none }
 
-enum FrogState { idle, jump, fall, death }
+enum OposumState { idle, jump, fall, death }
 
-class Frog extends SpriteAnimationGroupComponent<FrogState>
+class Oposum extends SpriteAnimationGroupComponent<OposumState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
-  Frog({required super.position})
-      : super(size: Vector2.all(32), anchor: Anchor.center) {
-    // debugMode = true;
+  Oposum({required super.position})
+      : super(size: Vector2.all(28), anchor: Anchor.center) {
+    debugMode = true;
   }
-  late Timer interval;
 
   bool dead = false;
 
   double gravity = 1.5;
   Vector2 velocity = Vector2(0, 0);
-  double moveSpeed = 200;
-  FrogDirection horizontalDirection = FrogDirection.none;
+  double moveSpeed = 50;
+  OposumDirection horizontalDirection = OposumDirection.none;
   bool onGround = false;
-  bool hasJumped = false;
-  final double _jumpLength = 50;
-  int nbJump = 0;
+
+  late Timer interval;
 
   @override
   void onLoad() async {
     animations = {
-      FrogState.idle: await game.loadSpriteAnimation(
-        'frog-idle2.png',
+      OposumState.idle: await game.loadSpriteAnimation(
+        'oposum.png',
         SpriteAnimationData.sequenced(
-          amount: 4,
-          textureSize: Vector2(35, 27),
-          stepTime: 0.5,
+          amount: 6,
+          textureSize: Vector2(36, 28),
+          stepTime: 0.25,
         ),
       ),
-      FrogState.death: await game.loadSpriteAnimation(
+      OposumState.death: await game.loadSpriteAnimation(
         'enemy-deadth.png',
         SpriteAnimationData.sequenced(
           amount: 6,
@@ -48,22 +46,14 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
           loop: false,
         ),
       ),
-      FrogState.jump: SpriteAnimation.spriteList(
-        [await game.loadSprite('frog-up.png')],
-        stepTime: double.infinity,
-      ),
-      FrogState.fall: SpriteAnimation.spriteList(
-        [await game.loadSprite('frog-down.png')],
-        stepTime: double.infinity,
-      ),
     };
-    current = FrogState.idle;
+    current = OposumState.idle;
 
     add(CircleHitbox());
 
     interval = Timer(
-      6,
-      onTick: () => jump(),
+      3,
+      onTick: () => moveSpeed = -1 * moveSpeed,
       repeat: true,
     );
   }
@@ -79,13 +69,18 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
         position.y += velocity.y * dt;
       }
       if (onGround) {
-        current = FrogState.idle;
-      } else if (velocity.y > 5) {
-        current = FrogState.fall;
+        current = OposumState.idle;
       }
-      if (horizontalDirection == FrogDirection.left && scale.x > 0) {
+      velocity.x = moveSpeed;
+      if (moveSpeed > 0) {
+        horizontalDirection = OposumDirection.left;
+      } else {
+        horizontalDirection = OposumDirection.right;
+      }
+
+      if (horizontalDirection == OposumDirection.left && scale.x > 0) {
         flipHorizontally();
-      } else if (horizontalDirection == FrogDirection.right && scale.x < 0) {
+      } else if (horizontalDirection == OposumDirection.right && scale.x < 0) {
         flipHorizontally();
       }
       onGround = false;
@@ -111,30 +106,14 @@ class Frog extends SpriteAnimationGroupComponent<FrogState>
 
         position += collisionVector.scaled(penetrationDepth);
         velocity.y = 0;
-        velocity.x = 0;
         onGround = true;
       }
     }
   }
 
   void die() {
-    current = FrogState.death;
+    current = OposumState.death;
     dead = true;
     add(RemoveEffect(delay: 1.0));
-  }
-
-  void jump() {
-    current = FrogState.jump;
-    onGround = false;
-
-    velocity.y -= _jumpLength;
-    if (nbJump % 3 == 0) {
-      velocity.x -= 50;
-      horizontalDirection = FrogDirection.right;
-    } else {
-      velocity.x += 50;
-      horizontalDirection = FrogDirection.left;
-    }
-    nbJump++;
   }
 }

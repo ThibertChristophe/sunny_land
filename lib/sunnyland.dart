@@ -5,6 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sunny_land/actors/frog.dart';
+import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/objects/cherry.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
@@ -57,6 +58,9 @@ class SunnyLand extends FlameGame
     for (final obj in frogs!.objects) {
       add(Frog(position: Vector2(obj.x, obj.y)));
     }
+
+    add(Oposum(position: Vector2(400, 100)));
+
     cameraComponent =
         CameraComponent.withFixedResolution(width: 1600, height: 720);
     cameraComponent.viewfinder.anchor = Anchor.bottomLeft;
