@@ -5,28 +5,30 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:sunny_land/sunnyland.dart';
 
-enum CherryState { idle, hit }
+enum GemState { idle, hit }
 
-class Cherry extends SpriteAnimationGroupComponent<CherryState>
+class Gem extends SpriteAnimationGroupComponent<GemState>
     with HasGameRef<SunnyLand> {
-  Cherry({size, required position})
+  Gem({size, required position})
       : super(
-            size: Vector2.all(21), position: position, anchor: Anchor.topLeft) {
-    //debugMode = true;
+            size: Vector2.all(15),
+            position: position,
+            anchor: Anchor.topCenter) {
+    // debugMode = true;
   }
 
   @override
   FutureOr<void> onLoad() async {
     animations = {
-      CherryState.idle: await game.loadSpriteAnimation(
-        'cherry.png',
+      GemState.idle: await game.loadSpriteAnimation(
+        'gem.png',
         SpriteAnimationData.sequenced(
           amount: 5,
-          textureSize: Vector2.all(21),
+          textureSize: Vector2.all(15),
           stepTime: 0.25,
         ),
       ),
-      CherryState.hit: await game.loadSpriteAnimation(
+      GemState.hit: await game.loadSpriteAnimation(
         'item-feedback.png',
         SpriteAnimationData.sequenced(
           amount: 5,
@@ -36,13 +38,13 @@ class Cherry extends SpriteAnimationGroupComponent<CherryState>
         ),
       ),
     };
-    current = CherryState.idle;
+    current = GemState.idle;
     add(CircleHitbox());
     return super.onLoad();
   }
 
   void hitted() {
-    current = CherryState.hit;
+    current = GemState.hit;
     add(RemoveEffect(delay: 0.75));
   }
 }

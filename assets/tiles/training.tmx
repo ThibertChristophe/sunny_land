@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="6">
+<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="7">
  <tileset firstgid="1" name="back" tilewidth="16" tileheight="16" tilecount="360" columns="24">
   <image source="back.png" width="384" height="240"/>
  </tileset>
@@ -35,7 +35,10 @@
   <object id="2" x="320" y="192.063" width="33" height="7.125"/>
  </objectgroup>
  <objectgroup id="5" name="cherry">
-  <object id="3" x="225" y="171.5" width="20" height="20"/>
+  <object id="3" x="225" y="171.5" width="24.25" height="24.25"/>
+ </objectgroup>
+ <objectgroup id="12" name="gems">
+  <object id="6" x="149.5" y="168.75" width="28.75" height="27.5"/>
  </objectgroup>
  <layer id="1" name="background" width="80" height="50">
   <data encoding="csv">
@@ -145,7 +148,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="6" name="vegetations" width="80" height="50">
+ <layer id="6" name="vegetations" width="80" height="50" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

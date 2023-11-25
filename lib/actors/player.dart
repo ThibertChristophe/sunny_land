@@ -4,6 +4,7 @@ import 'package:flame/effects.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/objects/cherry.dart';
+import 'package:sunny_land/objects/gem.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
 import '../sunnyland.dart';
@@ -177,6 +178,11 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       }
     }
     if (other is Cherry) {
+      if (intersectionPoints.length == 2) {
+        other.hitted();
+      }
+    }
+    if (other is Gem) {
       if (intersectionPoints.length == 2) {
         other.hitted();
       }

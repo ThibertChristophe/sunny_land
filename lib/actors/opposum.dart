@@ -12,8 +12,8 @@ enum OposumState { idle, jump, fall, death }
 class Oposum extends SpriteAnimationGroupComponent<OposumState>
     with CollisionCallbacks, HasGameRef<SunnyLand> {
   Oposum({required super.position})
-      : super(size: Vector2.all(28), anchor: Anchor.center) {
-    debugMode = true;
+      : super(size: Vector2.all(30), anchor: Anchor.center) {
+    //debugMode = true;
   }
 
   bool dead = false;
@@ -52,7 +52,7 @@ class Oposum extends SpriteAnimationGroupComponent<OposumState>
     add(CircleHitbox());
 
     interval = Timer(
-      3,
+      4,
       onTick: () => moveSpeed = -1 * moveSpeed,
       repeat: true,
     );

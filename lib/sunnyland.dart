@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/objects/cherry.dart';
+import 'package:sunny_land/objects/gem.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class SunnyLand extends FlameGame
     final ground = myMap.tileMap.getLayer<ObjectGroup>('ground');
     final platform = myMap.tileMap.getLayer<ObjectGroup>('platform');
     final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
+    final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
     final player = myMap.tileMap.getLayer<ObjectGroup>('player');
     final frogs = myMap.tileMap.getLayer<ObjectGroup>('frogs');
     for (final obj in ground!.objects) {
@@ -48,9 +50,10 @@ class SunnyLand extends FlameGame
           position: Vector2(obj.x, obj.y)));
     }
     for (final obj in cherries!.objects) {
-      add(Cherry(
-          size: Vector2(obj.width, obj.height),
-          position: Vector2(obj.x, obj.y)));
+      add(Cherry(position: Vector2(obj.x, obj.y)));
+    }
+    for (final obj in gems!.objects) {
+      add(Gem(position: Vector2(obj.x, obj.y)));
     }
     for (final obj in player!.objects) {
       add(fox = Player(position: Vector2(obj.x, obj.y)));
@@ -63,15 +66,9 @@ class SunnyLand extends FlameGame
 
     cameraComponent =
         CameraComponent.withFixedResolution(width: 1600, height: 720);
-    cameraComponent.viewfinder.anchor = Anchor.bottomLeft;
+    //cameraComponent.viewfinder.anchor = Anchor.bottomLeft;
 
     addAll([cameraComponent, world]);
-
-    // fox = Player(position: Vector2(100, 150));
-    // add(fox);
-
-    // frog = Frog(position: Vector2(300, 150));
-    // add(frog);
   }
 
   @override
