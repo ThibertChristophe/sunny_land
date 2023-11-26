@@ -15,8 +15,12 @@ import 'package:flutter/material.dart';
 import 'actors/player.dart';
 
 class SunnyLand extends FlameGame
-    with DoubleTapCallbacks, HasCollisionDetection {
+    with
+        DoubleTapCallbacks,
+        HasKeyboardHandlerComponents,
+        HasCollisionDetection {
   SunnyLand();
+
   late JoystickComponent joystick; // Joystick
   late Player fox;
   late Frog frog;
@@ -125,6 +129,6 @@ class SunnyLand extends FlameGame
 
   @override
   void onDoubleTapDown(DoubleTapDownEvent event) {
-    if (fox.onGround) fox.jump();
+    fox.jump();
   }
 }

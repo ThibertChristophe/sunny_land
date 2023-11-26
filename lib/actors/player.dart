@@ -1,6 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flutter/services.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/objects/cherry.dart';
@@ -14,12 +15,12 @@ enum FoxDirection { left, right, none, down }
 enum PlayerState { running, jumping, falling, idle, hitted, sit }
 
 class Player extends SpriteAnimationGroupComponent<PlayerState>
-    with CollisionCallbacks, HasGameRef<SunnyLand> {
+    with CollisionCallbacks, KeyboardHandler, HasGameRef<SunnyLand> {
   Player({required super.position})
       : super(size: Vector2.all(33), anchor: Anchor.center) {
     //debugMode = true;
   }
-  double gravity = 5;
+  double gravity = 7;
   Vector2 velocity = Vector2(0, 0);
   double moveSpeed = 160;
   FoxDirection horizontalDirection = FoxDirection.none;
@@ -28,7 +29,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   final double jumpSpeed = 600;
   final double terminalVelocity = 150;
 
-  final double _jumpLength = 140;
+  final double _jumpLength = 200;
 
   bool isFalling = false;
 
@@ -87,12 +88,6 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   void update(double dt) {
     super.update(dt);
 
-    // Gravité
-    if (!onGround) {
-      velocity.y += gravity;
-      position.y += velocity.y * dt;
-    }
-
     if (verticalDirection == FoxDirection.none) {
       switch (horizontalDirection) {
         case FoxDirection.left:
@@ -106,8 +101,15 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           velocity.x = 0;
       }
     }
-
-    if (onGround) {
+    // Gravité
+    if (!onGround) {
+      velocity.y += gravity;
+      //position.y += velocity.y * dt;
+      if (velocity.y > 7) {
+        current = PlayerState.falling;
+        isFalling = true;
+      }
+    } else {
       isFalling = false;
       if (verticalDirection == FoxDirection.down) {
         current = PlayerState.sit;
@@ -116,9 +118,6 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             ? PlayerState.idle
             : PlayerState.running;
       }
-    } else if (velocity.y > 5) {
-      current = PlayerState.falling;
-      isFalling = true;
     }
 
     // Prevent from jumping to crazy fast as well as descending too fast and
@@ -130,19 +129,14 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     } else if (horizontalDirection == FoxDirection.right && scale.x < 0) {
       flipHorizontally();
     }
-    // print(velocity.y);
-    if (verticalDirection == FoxDirection.none) {
-      position += velocity * dt;
-    }
-
-    onGround =
-        false; // force le fait qu'on est par défaut en chute libre pour detecter quand on quitte le sol pour tomber
+    print(position);
+    position += velocity * dt;
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-
+    onGround = false;
     // On stop notre chute quand on est sur du Ground
     if (other is Ground) {
       if (intersectionPoints.length == 2) {
@@ -158,7 +152,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         velocity.y = 0;
         onGround = true;
       }
-    } else if (other is Platform) {
+    }
+    if (other is Platform) {
       if (other.active) {
         // Si la plate forme est active (le joueur est au dessus) alors on active les collisions
         if (intersectionPoints.length == 2) {
@@ -202,7 +197,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             collisionVector.normalize();
 
             position += collisionVector.scaled(penetrationDepth);
-            jump();
+            current = PlayerState.jumping;
+            velocity.y -= _jumpLength;
 
             other.die();
           } else {
@@ -248,7 +244,9 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             collisionVector.normalize();
 
             position += collisionVector.scaled(penetrationDepth);
-            jump();
+
+            current = PlayerState.jumping;
+            velocity.y -= _jumpLength;
 
             other.die();
           } else {
@@ -282,9 +280,27 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   }
 
   void jump() {
-    current = PlayerState.jumping;
-    onGround = false;
+    if (current != PlayerState.jumping && current != PlayerState.falling) {
+      velocity.y -= _jumpLength;
+      current = PlayerState.jumping;
+      onGround = false;
+    }
+  }
 
-    velocity.y -= _jumpLength;
+  @override
+  bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    horizontalDirection = FoxDirection.none;
+    if (keysPressed.contains(LogicalKeyboardKey.keyA) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
+      horizontalDirection = FoxDirection.left;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyD) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
+      horizontalDirection = FoxDirection.right;
+    }
+    if (keysPressed.contains(LogicalKeyboardKey.space)) {
+      jump();
+    }
+
+    return true;
   }
 }
