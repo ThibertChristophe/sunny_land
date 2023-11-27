@@ -12,6 +12,7 @@ import 'package:sunny_land/objects/gem.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
 import 'package:flutter/material.dart';
+import 'package:sunny_land/obstacles/wall.dart';
 import 'actors/player.dart';
 
 class SunnyLand extends FlameGame
@@ -40,10 +41,12 @@ class SunnyLand extends FlameGame
 
     final ground = myMap.tileMap.getLayer<ObjectGroup>('ground');
     final platform = myMap.tileMap.getLayer<ObjectGroup>('platform');
+    final walls = myMap.tileMap.getLayer<ObjectGroup>('wall');
     final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
     final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
     final player = myMap.tileMap.getLayer<ObjectGroup>('player');
     final frogs = myMap.tileMap.getLayer<ObjectGroup>('frogs');
+    final enemies = myMap.tileMap.getLayer<ObjectGroup>('Enemy');
     for (final obj in ground!.objects) {
       add(Ground(
           size: Vector2(obj.width, obj.height),
@@ -51,6 +54,11 @@ class SunnyLand extends FlameGame
     }
     for (final obj in platform!.objects) {
       add(Platform(
+          size: Vector2(obj.width, obj.height),
+          position: Vector2(obj.x, obj.y)));
+    }
+    for (final obj in walls!.objects) {
+      add(Wall(
           size: Vector2(obj.width, obj.height),
           position: Vector2(obj.x, obj.y)));
     }
@@ -63,12 +71,20 @@ class SunnyLand extends FlameGame
     for (final obj in player!.objects) {
       add(fox = Player(position: Vector2(obj.x, obj.y)));
     }
-    for (final obj in frogs!.objects) {
-      add(Frog(position: Vector2(obj.x, obj.y)));
+    for (final obj in enemies!.objects) {
+      switch (obj.class_) {
+        case 'Frogs':
+          add(Frog(position: Vector2(obj.x, obj.y)));
+          break;
+        case 'Oposum':
+          add(Oposum(position: Vector2(obj.x, obj.y)));
+          break;
+        case 'Eagle':
+          add(Eagle(position: Vector2(obj.x, obj.y)));
+          break;
+      }
     }
 
-    add(Oposum(position: Vector2(400, 100)));
-    add(Eagle(position: Vector2(600, 100)));
     cameraComponent =
         CameraComponent.withFixedResolution(width: 1600, height: 720);
     //cameraComponent.viewfinder.anchor = Anchor.bottomLeft;
@@ -79,7 +95,7 @@ class SunnyLand extends FlameGame
   @override
   void update(double dt) {
     super.update(dt);
-    updateJoystick();
+    // updateJoystick();
   }
 
   // =============================== JOYSTICK =========================

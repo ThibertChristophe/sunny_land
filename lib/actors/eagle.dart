@@ -1,30 +1,29 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
-import 'package:sunny_land/actors/player.dart';
+import 'package:sunny_land/actors/enemies.dart';
 
 import '../sunnyland.dart';
 
-enum EagleState { idle, jump, fall, death }
+//enum EagleState { idle, jump, fall, death }
 
-class Eagle extends SpriteAnimationGroupComponent<EagleState>
-    with CollisionCallbacks, HasGameRef<SunnyLand> {
+class Eagle extends SpriteAnimationGroupComponent<EnemyState>
+    with Enemies, CollisionCallbacks, HasGameRef<SunnyLand> {
   Eagle({required super.position})
       : super(size: Vector2.all(40), anchor: Anchor.center) {
     //debugMode = true;
   }
 
-  bool dead = false;
+  //bool dead = false;
+  //Vector2 velocity = Vector2(0, 0);
 
-  Vector2 velocity = Vector2(0, 0);
   double moveSpeed = 30;
-
   late Timer interval;
 
   @override
   void onLoad() async {
     animations = {
-      EagleState.idle: await game.loadSpriteAnimation(
+      EnemyState.idle: await game.loadSpriteAnimation(
         'eagle-attack.png',
         SpriteAnimationData.sequenced(
           amount: 4,
@@ -32,7 +31,7 @@ class Eagle extends SpriteAnimationGroupComponent<EagleState>
           stepTime: 0.25,
         ),
       ),
-      EagleState.death: await game.loadSpriteAnimation(
+      EnemyState.death: await game.loadSpriteAnimation(
         'enemy-deadth.png',
         SpriteAnimationData.sequenced(
           amount: 6,
@@ -42,7 +41,7 @@ class Eagle extends SpriteAnimationGroupComponent<EagleState>
         ),
       ),
     };
-    current = EagleState.idle;
+    current = EnemyState.idle;
 
     add(CircleHitbox());
 
@@ -65,7 +64,7 @@ class Eagle extends SpriteAnimationGroupComponent<EagleState>
   }
 
   void die() {
-    current = EagleState.death;
+    current = EnemyState.death;
     dead = true;
     add(RemoveEffect(delay: 1.0));
   }

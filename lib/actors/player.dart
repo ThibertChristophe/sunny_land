@@ -2,12 +2,14 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/services.dart';
+import 'package:sunny_land/actors/eagle.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/objects/cherry.dart';
 import 'package:sunny_land/objects/gem.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
+import 'package:sunny_land/obstacles/wall.dart';
 import '../sunnyland.dart';
 
 enum FoxDirection { left, right, none, down }
@@ -29,7 +31,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   final double jumpSpeed = 600;
   final double terminalVelocity = 150;
 
-  final double _jumpLength = 200;
+  final double _jumpLength = 220;
 
   bool isFalling = false;
 
@@ -129,8 +131,9 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     } else if (horizontalDirection == FoxDirection.right && scale.x < 0) {
       flipHorizontally();
     }
-    print(position);
+    // print(position);
     position += velocity * dt;
+    onGround = false;
   }
 
   @override
@@ -151,6 +154,20 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         position += collisionVector.scaled(penetrationDepth);
         velocity.y = 0;
         onGround = true;
+      }
+    }
+    if (other is Wall) {
+      if (intersectionPoints.length == 2) {
+        final mid = (intersectionPoints.elementAt(0) +
+                intersectionPoints.elementAt(1)) /
+            2;
+        final collisionVector = absoluteCenter - mid;
+        double penetrationDepth = (size.x / 2) - collisionVector.length;
+
+        collisionVector.normalize();
+
+        position += collisionVector.scaled(penetrationDepth);
+        velocity.x = 0;
       }
     }
     if (other is Platform) {
@@ -230,6 +247,54 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       }
     }
     if (other is Oposum) {
+      if (!other.dead) {
+        if (intersectionPoints.length == 2) {
+          if (isFalling &&
+              (position.y < (other.position.y - (other.size.y / 2)))) {
+            final mid = (intersectionPoints.elementAt(0) +
+                    intersectionPoints.elementAt(1)) /
+                2;
+
+            final collisionVector = absoluteCenter - mid;
+            double penetrationDepth = (size.x / 2) - collisionVector.length;
+
+            collisionVector.normalize();
+
+            position += collisionVector.scaled(penetrationDepth);
+
+            current = PlayerState.jumping;
+            velocity.y -= _jumpLength;
+
+            other.die();
+          } else {
+            current = PlayerState.hitted;
+            if (intersectionPoints.first.x < other.position.x) {
+              add(SequenceEffect([
+                MoveEffect.by(
+                  Vector2(-1, -1),
+                  EffectController(
+                    duration: 0.1,
+                    repeatCount: 1,
+                  ),
+                ),
+              ]));
+            }
+            if (intersectionPoints.first.x > other.position.x) {
+              add(SequenceEffect([
+                MoveEffect.by(
+                  Vector2(1, -1),
+                  EffectController(
+                    duration: 0.1,
+                    repeatCount: 1,
+                  ),
+                ),
+              ]));
+            }
+          }
+        }
+      }
+    }
+    if (other is Eagle) {
       if (!other.dead) {
         if (intersectionPoints.length == 2) {
           if (isFalling &&

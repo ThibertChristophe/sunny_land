@@ -1,25 +1,26 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:sunny_land/actors/enemies.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 
 import '../sunnyland.dart';
 
 enum OposumDirection { left, right, none }
 
-enum OposumState { idle, jump, fall, death }
+//enum OposumState { idle, jump, fall, death }
 
-class Oposum extends SpriteAnimationGroupComponent<OposumState>
-    with CollisionCallbacks, HasGameRef<SunnyLand> {
+class Oposum extends SpriteAnimationGroupComponent<EnemyState>
+    with Enemies, CollisionCallbacks, HasGameRef<SunnyLand> {
   Oposum({required super.position})
       : super(size: Vector2.all(30), anchor: Anchor.center) {
     //debugMode = true;
   }
 
-  bool dead = false;
+  // bool dead = false;
+  //Vector2 velocity = Vector2(0, 0);
 
   double gravity = 1.5;
-  Vector2 velocity = Vector2(0, 0);
   double moveSpeed = 50;
   OposumDirection horizontalDirection = OposumDirection.none;
   bool onGround = false;
@@ -29,7 +30,7 @@ class Oposum extends SpriteAnimationGroupComponent<OposumState>
   @override
   void onLoad() async {
     animations = {
-      OposumState.idle: await game.loadSpriteAnimation(
+      EnemyState.idle: await game.loadSpriteAnimation(
         'oposum.png',
         SpriteAnimationData.sequenced(
           amount: 6,
@@ -37,7 +38,7 @@ class Oposum extends SpriteAnimationGroupComponent<OposumState>
           stepTime: 0.25,
         ),
       ),
-      OposumState.death: await game.loadSpriteAnimation(
+      EnemyState.death: await game.loadSpriteAnimation(
         'enemy-deadth.png',
         SpriteAnimationData.sequenced(
           amount: 6,
@@ -47,7 +48,7 @@ class Oposum extends SpriteAnimationGroupComponent<OposumState>
         ),
       ),
     };
-    current = OposumState.idle;
+    current = EnemyState.idle;
 
     add(CircleHitbox());
 
@@ -69,7 +70,7 @@ class Oposum extends SpriteAnimationGroupComponent<OposumState>
         position.y += velocity.y * dt;
       }
       if (onGround) {
-        current = OposumState.idle;
+        current = EnemyState.idle;
       }
       velocity.x = moveSpeed;
       if (moveSpeed > 0) {
@@ -112,7 +113,7 @@ class Oposum extends SpriteAnimationGroupComponent<OposumState>
   }
 
   void die() {
-    current = OposumState.death;
+    current = EnemyState.death;
     dead = true;
     add(RemoveEffect(delay: 1.0));
   }
