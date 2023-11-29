@@ -45,8 +45,7 @@ class SunnyLand extends FlameGame
     final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
     final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
     final player = myMap.tileMap.getLayer<ObjectGroup>('player');
-    final frogs = myMap.tileMap.getLayer<ObjectGroup>('frogs');
-    final enemies = myMap.tileMap.getLayer<ObjectGroup>('Enemy');
+    final enemies = myMap.tileMap.getLayer<ObjectGroup>('Enemies');
     for (final obj in ground!.objects) {
       add(Ground(
           size: Vector2(obj.width, obj.height),
@@ -95,7 +94,7 @@ class SunnyLand extends FlameGame
   @override
   void update(double dt) {
     super.update(dt);
-    // updateJoystick();
+    updateJoystick();
   }
 
   // =============================== JOYSTICK =========================

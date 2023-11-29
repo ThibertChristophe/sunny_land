@@ -31,9 +31,12 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   final double jumpSpeed = 600;
   final double terminalVelocity = 150;
 
-  final double _jumpLength = 220;
+  final double _jumpLength = 250;
 
   bool isFalling = false;
+
+  bool collided = false;
+  FoxDirection collidedDirection = FoxDirection.none;
 
   @override
   void onLoad() async {
@@ -89,20 +92,26 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   @override
   void update(double dt) {
     super.update(dt);
-
-    if (verticalDirection == FoxDirection.none) {
-      switch (horizontalDirection) {
-        case FoxDirection.left:
+    print("Collided : $collided");
+    print("Coté collided : $collidedDirection");
+    print("Direction joystick : $horizontalDirection");
+    switch (horizontalDirection) {
+      case FoxDirection.left:
+        if (!collided || collidedDirection == FoxDirection.right) {
           velocity.x = -1 * moveSpeed;
-          break;
-        case FoxDirection.right:
+        }
+
+        break;
+      case FoxDirection.right:
+        if (!collided || collidedDirection == FoxDirection.left) {
           velocity.x = 1 * moveSpeed;
-          break;
-        case FoxDirection.none:
-        default:
-          velocity.x = 0;
-      }
+        }
+        break;
+      case FoxDirection.none:
+      default:
+        velocity.x = 0;
     }
+
     // Gravité
     if (!onGround) {
       velocity.y += gravity;
@@ -133,13 +142,12 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     }
     // print(position);
     position += velocity * dt;
-    onGround = false;
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-    onGround = false;
+
     // On stop notre chute quand on est sur du Ground
     if (other is Ground) {
       if (intersectionPoints.length == 2) {
@@ -157,17 +165,10 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       }
     }
     if (other is Wall) {
-      if (intersectionPoints.length == 2) {
-        final mid = (intersectionPoints.elementAt(0) +
-                intersectionPoints.elementAt(1)) /
-            2;
-        final collisionVector = absoluteCenter - mid;
-        double penetrationDepth = (size.x / 2) - collisionVector.length;
-
-        collisionVector.normalize();
-
-        position += collisionVector.scaled(penetrationDepth);
+      if (!collided) {
         velocity.x = 0;
+        collided = true;
+        collidedDirection = horizontalDirection;
       }
     }
     if (other is Platform) {
@@ -341,6 +342,18 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           }
         }
       }
+    }
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    super.onCollisionEnd(other);
+    if (other is Platform) {
+      onGround = false;
+    }
+    if (other is Wall) {
+      collidedDirection = FoxDirection.none;
+      collided = false;
     }
   }
 
