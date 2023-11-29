@@ -46,7 +46,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         SpriteAnimationData.sequenced(
           amount: 6,
           textureSize: Vector2.all(33),
-          stepTime: 0.1,
+          stepTime: 0.15,
         ),
       ),
       PlayerState.hitted: await game.loadSpriteAnimation(
@@ -54,7 +54,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         SpriteAnimationData.sequenced(
           amount: 2,
           textureSize: Vector2.all(33),
-          stepTime: 0.1,
+          stepTime: 0.15,
         ),
       ),
       PlayerState.idle: await game.loadSpriteAnimation(
@@ -62,7 +62,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         SpriteAnimationData.sequenced(
           amount: 4,
           textureSize: Vector2.all(33),
-          stepTime: 0.1,
+          stepTime: 0.15,
         ),
       ),
       PlayerState.sit: await game.loadSpriteAnimation(
