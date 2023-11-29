@@ -222,7 +222,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             velocity.y -= _jumpLength;
 
             other.die();
-          } else {
+          } else if (current != PlayerState.hitted) {
             current = PlayerState.hitted;
             if (intersectionPoints.first.x < other.position.x) {
               add(SequenceEffect([
@@ -270,7 +270,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             velocity.y -= _jumpLength;
 
             other.die();
-          } else {
+          } else if (current != PlayerState.hitted) {
             current = PlayerState.hitted;
             if (intersectionPoints.first.x < other.position.x) {
               add(SequenceEffect([
@@ -318,7 +318,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             velocity.y -= _jumpLength;
 
             other.die();
-          } else {
+          } else if (current != PlayerState.hitted) {
             current = PlayerState.hitted;
             if (intersectionPoints.first.x < other.position.x) {
               add(SequenceEffect([

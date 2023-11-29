@@ -118,27 +118,32 @@ class SunnyLand extends FlameGame
   }
 
   void updateJoystick() {
-    switch (joystick.direction) {
-      case JoystickDirection.down:
-        fox.verticalDirection = FoxDirection.down;
-        fox.horizontalDirection = FoxDirection.none;
-        break;
-      case JoystickDirection.downLeft:
-      case JoystickDirection.upLeft:
-      case JoystickDirection.left:
-        fox.horizontalDirection = FoxDirection.left;
-        fox.verticalDirection = FoxDirection.none;
-        break;
-      case JoystickDirection.downRight:
-      case JoystickDirection.upRight:
-      case JoystickDirection.right:
-        fox.horizontalDirection = FoxDirection.right;
-        fox.verticalDirection = FoxDirection.none;
-        break;
-      default:
-        fox.verticalDirection = FoxDirection.none;
-        fox.horizontalDirection = FoxDirection.none;
-        break;
+    if (fox.current == PlayerState.hitted) {
+      fox.verticalDirection = FoxDirection.none;
+      fox.horizontalDirection = FoxDirection.none;
+    } else {
+      switch (joystick.direction) {
+        case JoystickDirection.down:
+          fox.verticalDirection = FoxDirection.down;
+          fox.horizontalDirection = FoxDirection.none;
+          break;
+        case JoystickDirection.downLeft:
+        case JoystickDirection.upLeft:
+        case JoystickDirection.left:
+          fox.horizontalDirection = FoxDirection.left;
+          fox.verticalDirection = FoxDirection.none;
+          break;
+        case JoystickDirection.downRight:
+        case JoystickDirection.upRight:
+        case JoystickDirection.right:
+          fox.horizontalDirection = FoxDirection.right;
+          fox.verticalDirection = FoxDirection.none;
+          break;
+        default:
+          fox.verticalDirection = FoxDirection.none;
+          fox.horizontalDirection = FoxDirection.none;
+          break;
+      }
     }
   }
 
