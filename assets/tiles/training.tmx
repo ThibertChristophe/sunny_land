@@ -1,26 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="15">
+<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="17">
  <tileset firstgid="1" name="back" tilewidth="16" tileheight="16" tilecount="360" columns="24">
   <image source="back.png" width="384" height="240"/>
  </tileset>
  <tileset firstgid="361" name="tileset" tilewidth="16" tileheight="16" tilecount="575" columns="25">
   <image source="tileset.png" width="400" height="368"/>
- </tileset>
- <tileset firstgid="936" name="cherry" tilewidth="21" tileheight="21" tilecount="5" columns="5">
-  <image source="cherry.png" width="105" height="21"/>
-  <tile id="4">
-   <animation>
-    <frame tileid="0" duration="70"/>
-    <frame tileid="1" duration="80"/>
-    <frame tileid="2" duration="80"/>
-    <frame tileid="3" duration="80"/>
-    <frame tileid="4" duration="80"/>
-    <frame tileid="3" duration="80"/>
-    <frame tileid="2" duration="80"/>
-    <frame tileid="1" duration="80"/>
-    <frame tileid="0" duration="70"/>
-   </animation>
-  </tile>
  </tileset>
  <tileset firstgid="941" name="props" tilewidth="16" tileheight="16" tilecount="364" columns="26">
   <image source="props.png" width="416" height="224"/>
@@ -32,10 +16,11 @@
   <object id="1" x="0.5" y="240" width="1280.67" height="32"/>
  </objectgroup>
  <objectgroup id="13" name="wall">
-  <object id="9" x="544" y="176.125" width="16.125" height="63.5341"/>
+  <object id="9" x="544" y="183.12" width="16.0136" height="56.5393"/>
  </objectgroup>
  <objectgroup id="4" name="platform">
   <object id="2" x="320" y="192.063" width="33" height="7.125"/>
+  <object id="16" x="544.014" y="176.008" width="15.9743" height="7.01185"/>
  </objectgroup>
  <objectgroup id="5" name="cherry">
   <object id="3" x="225" y="171.5" width="24.25" height="24.25"/>

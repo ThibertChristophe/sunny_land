@@ -20,7 +20,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     with CollisionCallbacks, KeyboardHandler, HasGameRef<SunnyLand> {
   Player({required super.position})
       : super(size: Vector2.all(33), anchor: Anchor.center) {
-    //debugMode = true;
+    debugMode = true;
   }
   double gravity = 7;
   Vector2 velocity = Vector2(0, 0);
@@ -92,13 +92,16 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   @override
   void update(double dt) {
     super.update(dt);
-    print("Collided : $collided");
-    print("Coté collided : $collidedDirection");
-    print("Direction joystick : $horizontalDirection");
+    if (position.x <= 32) {
+      velocity.x = 0;
+    }
+    // print("Collided : $collided");
+    // print("Coté collided : $collidedDirection");
+    // print("Direction joystick : $horizontalDirection");
     switch (horizontalDirection) {
       case FoxDirection.left:
         if (!collided || collidedDirection == FoxDirection.right) {
-          velocity.x = -1 * moveSpeed;
+          if (position.x >= size.x / 2) velocity.x = -1 * moveSpeed;
         }
 
         break;
@@ -349,6 +352,9 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   void onCollisionEnd(PositionComponent other) {
     super.onCollisionEnd(other);
     if (other is Platform) {
+      onGround = false;
+    }
+    if (other is Ground) {
       onGround = false;
     }
     if (other is Wall) {
