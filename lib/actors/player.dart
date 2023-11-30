@@ -92,18 +92,12 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   @override
   void update(double dt) {
     super.update(dt);
-    if (position.x <= 32) {
-      velocity.x = 0;
-    }
-    // print("Collided : $collided");
-    // print("Coté collided : $collidedDirection");
-    // print("Direction joystick : $horizontalDirection");
+
     switch (horizontalDirection) {
       case FoxDirection.left:
         if (!collided || collidedDirection == FoxDirection.right) {
-          if (position.x >= size.x / 2) velocity.x = -1 * moveSpeed;
+          if (position.x >= size.x) velocity.x = -1 * moveSpeed;
         }
-
         break;
       case FoxDirection.right:
         if (!collided || collidedDirection == FoxDirection.left) {
@@ -132,18 +126,17 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             ? PlayerState.idle
             : PlayerState.running;
       }
+      // Prevent from jumping to crazy fast as well as descending too fast and
+      // crashing through the ground or a platform.
+      velocity.y = velocity.y.clamp(-jumpSpeed, terminalVelocity);
     }
-
-    // Prevent from jumping to crazy fast as well as descending too fast and
-    // crashing through the ground or a platform.
-    velocity.y = velocity.y.clamp(-jumpSpeed, terminalVelocity);
 
     if (horizontalDirection == FoxDirection.left && scale.x > 0) {
       flipHorizontally();
     } else if (horizontalDirection == FoxDirection.right && scale.x < 0) {
       flipHorizontally();
     }
-    // print(position);
+
     position += velocity * dt;
   }
 
@@ -164,7 +157,10 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
         position += collisionVector.scaled(penetrationDepth);
         velocity.y = 0;
-        onGround = true;
+        // Evite d'être en levitation sur le coté en dehors du ground
+        if (other.position.y > position.y + 7) {
+          onGround = true;
+        }
       }
     }
     if (other is Wall) {

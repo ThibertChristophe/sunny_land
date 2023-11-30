@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
@@ -84,8 +87,10 @@ class SunnyLand extends FlameGame
       }
     }
 
-    cameraComponent =
-        CameraComponent.withFixedResolution(width: 1600, height: 720);
+    cameraComponent = CameraComponent(
+      world: world,
+      viewport: FixedAspectRatioViewport(aspectRatio: 1.0),
+    );
     //cameraComponent.viewfinder.anchor = Anchor.bottomLeft;
 
     addAll([cameraComponent, world]);
