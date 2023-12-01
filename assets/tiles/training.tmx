@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="22">
+<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="23">
  <tileset firstgid="1" name="back" tilewidth="16" tileheight="16" tilecount="360" columns="24">
   <image source="back.png" width="384" height="240"/>
  </tileset>
@@ -36,10 +36,11 @@
   <object id="16" x="544.014" y="176.008" width="15.9743" height="7.01185"/>
  </objectgroup>
  <objectgroup id="5" name="cherry">
-  <object id="3" x="225" y="171.5" width="24.25" height="24.25"/>
+  <object id="3" x="225" y="168.167" width="24.25" height="24.25"/>
  </objectgroup>
  <objectgroup id="12" name="gems">
-  <object id="6" x="149.5" y="168.75" width="28.75" height="27.5"/>
+  <object id="6" x="179.833" y="172.083" width="20.0833" height="20.5"/>
+  <object id="22" x="275.625" y="171.75" width="20.0833" height="20.5"/>
  </objectgroup>
  <layer id="1" name="background" width="80" height="50">
   <data encoding="csv">
@@ -258,7 +259,7 @@
 </data>
  </layer>
  <objectgroup id="10" name="player">
-  <object id="4" name="Player" type="Player" x="85.1819" y="204.364" width="33" height="35"/>
+  <object id="4" name="Player" type="Player" x="85.1819" y="206.697" width="33" height="33"/>
  </objectgroup>
  <objectgroup id="11" name="Enemies">
   <object id="5" name="Enemy" type="Frogs" x="266.909" y="207.182" width="31" height="33"/>

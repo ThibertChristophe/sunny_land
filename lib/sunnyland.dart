@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -39,53 +37,54 @@ class SunnyLand extends FlameGame
   Future<void> onLoad() async {
     await super.onLoad();
     addJoystick();
-    myMap = await TiledComponent.load("training.tmx", Vector2.all(16));
+    myMap = await TiledComponent.load("level1.tmx", Vector2.all(16));
     add(myMap);
 
-    final ground = myMap.tileMap.getLayer<ObjectGroup>('ground');
-    final platform = myMap.tileMap.getLayer<ObjectGroup>('platform');
-    final walls = myMap.tileMap.getLayer<ObjectGroup>('wall');
-    final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
-    final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
+    // final ground = myMap.tileMap.getLayer<ObjectGroup>('ground');
+    //final platform = myMap.tileMap.getLayer<ObjectGroup>('platform');
+    // final walls = myMap.tileMap.getLayer<ObjectGroup>('wall');
+    // final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
+    //final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
     final player = myMap.tileMap.getLayer<ObjectGroup>('player');
-    final enemies = myMap.tileMap.getLayer<ObjectGroup>('Enemies');
-    for (final obj in ground!.objects) {
-      add(Ground(
-          size: Vector2(obj.width, obj.height),
-          position: Vector2(obj.x, obj.y)));
-    }
-    for (final obj in platform!.objects) {
-      add(Platform(
-          size: Vector2(obj.width, obj.height),
-          position: Vector2(obj.x, obj.y)));
-    }
-    for (final obj in walls!.objects) {
-      add(Wall(
-          size: Vector2(obj.width, obj.height),
-          position: Vector2(obj.x, obj.y)));
-    }
-    for (final obj in cherries!.objects) {
-      add(Cherry(position: Vector2(obj.x, obj.y)));
-    }
-    for (final obj in gems!.objects) {
-      add(Gem(position: Vector2(obj.x, obj.y)));
-    }
+
+    // final enemies = myMap.tileMap.getLayer<ObjectGroup>('Enemies');
+    // for (final obj in ground!.objects) {
+    //   add(Ground(
+    //       size: Vector2(obj.width, obj.height),
+    //       position: Vector2(obj.x, obj.y)));
+    // }
+    // for (final obj in platform!.objects) {
+    //   add(Platform(
+    //       size: Vector2(obj.width, obj.height),
+    //       position: Vector2(obj.x, obj.y)));
+    // }
+    // for (final obj in walls!.objects) {
+    //   add(Wall(
+    //       size: Vector2(obj.width, obj.height),
+    //       position: Vector2(obj.x, obj.y)));
+    // }
+    // for (final obj in cherries!.objects) {
+    //   add(Cherry(position: Vector2(obj.x, obj.y)));
+    // }
+    // for (final obj in gems!.objects) {
+    //   add(Gem(position: Vector2(obj.x, obj.y)));
+    // }
     for (final obj in player!.objects) {
       add(fox = Player(position: Vector2(obj.x, obj.y)));
     }
-    for (final obj in enemies!.objects) {
-      switch (obj.class_) {
-        case 'Frogs':
-          add(Frog(position: Vector2(obj.x, obj.y)));
-          break;
-        case 'Oposum':
-          add(Oposum(position: Vector2(obj.x, obj.y)));
-          break;
-        case 'Eagle':
-          add(Eagle(position: Vector2(obj.x, obj.y)));
-          break;
-      }
-    }
+    // for (final obj in enemies!.objects) {
+    //   switch (obj.class_) {
+    //     case 'Frogs':
+    //       add(Frog(position: Vector2(obj.x, obj.y)));
+    //       break;
+    //     case 'Oposum':
+    //       add(Oposum(position: Vector2(obj.x, obj.y)));
+    //       break;
+    //     case 'Eagle':
+    //       add(Eagle(position: Vector2(obj.x, obj.y)));
+    //       break;
+    //   }
+    // }
 
     cameraComponent = CameraComponent(
       world: world,
