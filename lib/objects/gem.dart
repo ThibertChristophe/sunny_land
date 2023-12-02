@@ -25,7 +25,7 @@ class Gem extends SpriteAnimationGroupComponent<GemState>
         SpriteAnimationData.sequenced(
           amount: 5,
           textureSize: Vector2.all(15),
-          stepTime: 0.25,
+          stepTime: 0.1,
         ),
       ),
       GemState.hit: await game.loadSpriteAnimation(

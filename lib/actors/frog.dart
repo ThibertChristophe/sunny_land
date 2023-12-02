@@ -37,7 +37,7 @@ class Frog extends SpriteAnimationGroupComponent<EnemyState>
         SpriteAnimationData.sequenced(
           amount: 4,
           textureSize: Vector2(35, 27),
-          stepTime: 0.5,
+          stepTime: 0.22,
         ),
       ),
       EnemyState.death: await game.loadSpriteAnimation(

@@ -28,7 +28,7 @@ class Eagle extends SpriteAnimationGroupComponent<EnemyState>
         SpriteAnimationData.sequenced(
           amount: 4,
           textureSize: Vector2.all(40),
-          stepTime: 0.25,
+          stepTime: 0.15,
         ),
       ),
       EnemyState.death: await game.loadSpriteAnimation(

@@ -23,7 +23,7 @@ class Cherry extends SpriteAnimationGroupComponent<CherryState>
         SpriteAnimationData.sequenced(
           amount: 5,
           textureSize: Vector2.all(21),
-          stepTime: 0.25,
+          stepTime: 0.22,
         ),
       ),
       CherryState.hit: await game.loadSpriteAnimation(

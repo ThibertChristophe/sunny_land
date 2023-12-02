@@ -35,7 +35,7 @@ class Oposum extends SpriteAnimationGroupComponent<EnemyState>
         SpriteAnimationData.sequenced(
           amount: 6,
           textureSize: Vector2(36, 28),
-          stepTime: 0.25,
+          stepTime: 0.1,
         ),
       ),
       EnemyState.death: await game.loadSpriteAnimation(
