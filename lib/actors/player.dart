@@ -86,7 +86,13 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
     current = PlayerState.idle;
 
-    add(CircleHitbox());
+    // add(CircleHitbox());
+    add(PolygonHitbox([
+      Vector2(24, 33),
+      Vector2(24, 9),
+      Vector2(4, 9),
+      Vector2(4, 33),
+    ], anchor: Anchor.bottomCenter));
   }
 
   @override
@@ -220,28 +226,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             other.die();
           } else if (current != PlayerState.hitted) {
             current = PlayerState.hitted;
-            if (intersectionPoints.first.x < other.position.x) {
-              add(SequenceEffect([
-                MoveEffect.by(
-                  Vector2(-1, -1),
-                  EffectController(
-                    duration: 0.1,
-                    repeatCount: 1,
-                  ),
-                ),
-              ]));
-            }
-            if (intersectionPoints.first.x > other.position.x) {
-              add(SequenceEffect([
-                MoveEffect.by(
-                  Vector2(1, -1),
-                  EffectController(
-                    duration: 0.1,
-                    repeatCount: 1,
-                  ),
-                ),
-              ]));
-            }
+            hittedEffect(intersectionPoints, other);
           }
         }
       }
@@ -268,28 +253,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             other.die();
           } else if (current != PlayerState.hitted) {
             current = PlayerState.hitted;
-            if (intersectionPoints.first.x < other.position.x) {
-              add(SequenceEffect([
-                MoveEffect.by(
-                  Vector2(-1, -1),
-                  EffectController(
-                    duration: 0.1,
-                    repeatCount: 1,
-                  ),
-                ),
-              ]));
-            }
-            if (intersectionPoints.first.x > other.position.x) {
-              add(SequenceEffect([
-                MoveEffect.by(
-                  Vector2(1, -1),
-                  EffectController(
-                    duration: 0.1,
-                    repeatCount: 1,
-                  ),
-                ),
-              ]));
-            }
+            hittedEffect(intersectionPoints, other);
           }
         }
       }
@@ -316,31 +280,35 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             other.die();
           } else if (current != PlayerState.hitted) {
             current = PlayerState.hitted;
-            if (intersectionPoints.first.x < other.position.x) {
-              add(SequenceEffect([
-                MoveEffect.by(
-                  Vector2(-1, -1),
-                  EffectController(
-                    duration: 0.1,
-                    repeatCount: 1,
-                  ),
-                ),
-              ]));
-            }
-            if (intersectionPoints.first.x > other.position.x) {
-              add(SequenceEffect([
-                MoveEffect.by(
-                  Vector2(1, -1),
-                  EffectController(
-                    duration: 0.1,
-                    repeatCount: 1,
-                  ),
-                ),
-              ]));
-            }
+            hittedEffect(intersectionPoints, other);
           }
         }
       }
+    }
+  }
+
+  void hittedEffect(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (intersectionPoints.first.x < other.position.x) {
+      add(SequenceEffect([
+        MoveEffect.by(
+          Vector2(-3, -3),
+          EffectController(
+            duration: 0.15,
+            repeatCount: 1,
+          ),
+        ),
+      ]));
+    }
+    if (intersectionPoints.first.x > other.position.x) {
+      add(SequenceEffect([
+        MoveEffect.by(
+          Vector2(3, -3),
+          EffectController(
+            duration: 0.15,
+            repeatCount: 1,
+          ),
+        ),
+      ]));
     }
   }
 

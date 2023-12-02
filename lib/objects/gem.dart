@@ -45,6 +45,9 @@ class Gem extends SpriteAnimationGroupComponent<GemState>
 
   void hitted() {
     current = GemState.hit;
-    add(RemoveEffect(delay: 0.75));
+    add(RemoveEffect(
+      delay: 0.75,
+      onComplete: () => game.gemsCollected += 1,
+    ));
   }
 }

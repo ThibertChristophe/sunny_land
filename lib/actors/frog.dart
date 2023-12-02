@@ -45,7 +45,7 @@ class Frog extends SpriteAnimationGroupComponent<EnemyState>
         SpriteAnimationData.sequenced(
           amount: 6,
           textureSize: Vector2(40, 41),
-          stepTime: 0.2,
+          stepTime: 0.1,
           loop: false,
         ),
       ),
@@ -121,7 +121,7 @@ class Frog extends SpriteAnimationGroupComponent<EnemyState>
   void die() {
     current = EnemyState.death;
     dead = true;
-    add(RemoveEffect(delay: 1.0));
+    add(RemoveEffect(delay: 0.6));
   }
 
   void jump() {
