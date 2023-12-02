@@ -177,6 +177,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       if (!collided) {
         velocity.x = 0;
         collided = true;
+        // on enregistre de quel coté est notre collision
         collidedDirection = horizontalDirection;
       }
     }
@@ -212,6 +213,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     if (other is Frog) {
       if (!other.dead) {
         if (intersectionPoints.length == 2) {
+          // Vérifie que l'on est bien occupé de tomber et qu'on est au dessus du component
           if (isFalling &&
               (position.y < (other.position.y - (other.size.y / 2)))) {
             final mid = (intersectionPoints.elementAt(0) +
@@ -294,6 +296,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     }
   }
 
+  /// Joue l'effet d'être touché
+  /// Nous fais faire un bond en arrière
   void hittedEffect(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (intersectionPoints.first.x < other.position.x) {
       add(
@@ -340,6 +344,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     }
   }
 
+  /// Fonction de saut vérifie qu'on est pas déjà occupé de sauter ou de tomber
   void jump() {
     if (current != PlayerState.jumping && current != PlayerState.falling) {
       velocity.y -= _jumpLength;
