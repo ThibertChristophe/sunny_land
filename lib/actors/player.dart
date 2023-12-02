@@ -34,7 +34,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   final double _jumpLength = 250;
 
   bool isFalling = false;
-
+  bool isHitted = false;
   bool collided = false;
   FoxDirection collidedDirection = FoxDirection.none;
 
@@ -119,18 +119,22 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     if (!onGround) {
       velocity.y += gravity;
       //position.y += velocity.y * dt;
-      if (velocity.y > 7) {
-        current = PlayerState.falling;
-        isFalling = true;
+      if (!isHitted) {
+        if (velocity.y > 7) {
+          current = PlayerState.falling;
+          isFalling = true;
+        }
       }
     } else {
       isFalling = false;
-      if (verticalDirection == FoxDirection.down) {
-        current = PlayerState.sit;
-      } else {
-        current = (horizontalDirection == FoxDirection.none)
-            ? PlayerState.idle
-            : PlayerState.running;
+      if (!isHitted) {
+        if (verticalDirection == FoxDirection.down) {
+          current = PlayerState.sit;
+        } else {
+          current = (horizontalDirection == FoxDirection.none)
+              ? PlayerState.idle
+              : PlayerState.running;
+        }
       }
       // Prevent from jumping to crazy fast as well as descending too fast and
       // crashing through the ground or a platform.
@@ -226,6 +230,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             other.die();
           } else if (current != PlayerState.hitted) {
             current = PlayerState.hitted;
+            isHitted = true;
             hittedEffect(intersectionPoints, other);
           }
         }
@@ -253,6 +258,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             other.die();
           } else if (current != PlayerState.hitted) {
             current = PlayerState.hitted;
+            isHitted = true;
             hittedEffect(intersectionPoints, other);
           }
         }
@@ -280,6 +286,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             other.die();
           } else if (current != PlayerState.hitted) {
             current = PlayerState.hitted;
+            isHitted = true;
             hittedEffect(intersectionPoints, other);
           }
         }
@@ -289,24 +296,30 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
   void hittedEffect(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (intersectionPoints.first.x < other.position.x) {
-      add(SequenceEffect([
-        MoveEffect.by(
-          Vector2(-3, -3),
-          EffectController(
-            duration: 0.15,
-            repeatCount: 1,
-          ),
+      add(
+        SequenceEffect(
+          [
+            MoveEffect.by(
+              Vector2(-20, -15),
+              EffectController(
+                duration: 0.2,
+                repeatCount: 1,
+              ),
+              onComplete: () => isHitted = false,
+            ),
+          ],
         ),
-      ]));
+      );
     }
     if (intersectionPoints.first.x > other.position.x) {
       add(SequenceEffect([
         MoveEffect.by(
-          Vector2(3, -3),
+          Vector2(20, -15),
           EffectController(
-            duration: 0.15,
+            duration: 0.2,
             repeatCount: 1,
           ),
+          onComplete: () => isHitted = false,
         ),
       ]));
     }
