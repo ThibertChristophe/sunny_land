@@ -120,7 +120,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       velocity.y += gravity;
       //position.y += velocity.y * dt;
       if (!isHitted) {
-        if (velocity.y > 7) {
+        // changement de > 7 en > 0
+        if (velocity.y > 0) {
           current = PlayerState.falling;
           isFalling = true;
         }
@@ -153,23 +154,39 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-
     // On stop notre chute quand on est sur du Ground
     if (other is Ground) {
-      if (intersectionPoints.length == 2) {
-        final mid = (intersectionPoints.elementAt(0) +
-                intersectionPoints.elementAt(1)) /
-            2;
-        final collisionVector = absoluteCenter - mid;
-        double penetrationDepth = (size.x / 2) - collisionVector.length;
+      Vector2 inter1 = intersectionPoints.elementAt(0);
+      Vector2 inter2 = intersectionPoints.elementAt(1);
 
-        collisionVector.normalize();
-
-        position += collisionVector.scaled(penetrationDepth);
+      // Detect si on touche le bas d'un ground
+      if (position.y > other.position.y + other.size.y) {
+        //print('EN BAS');
         velocity.y = 0;
-        // Evite d'être en levitation sur le coté en dehors du ground
-        if (other.position.y > position.y + 7) {
-          onGround = true;
+      } else if (inter1.y > other.position.y) {
+        // detecte si on touche le coté (wall)
+        //print('WALL');
+        if (!collided) {
+          collided = true;
+          velocity.x = 0;
+          collidedDirection = horizontalDirection;
+        }
+      } else {
+        //print('DESSUS');
+        if (intersectionPoints.length == 2) {
+          final mid = (intersectionPoints.elementAt(0) +
+                  intersectionPoints.elementAt(1)) /
+              2;
+          // Evite d'être en levitation sur le coté en dehors du ground
+          final collisionVector = absoluteCenter - mid;
+          double penetrationDepth = (size.x / 2) - collisionVector.length;
+          collisionVector.normalize();
+
+          position += collisionVector.scaled(penetrationDepth);
+          velocity.y = 0;
+          if (other.position.y > position.y) {
+            onGround = true;
+          }
         }
       }
     }
@@ -336,7 +353,13 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       onGround = false;
     }
     if (other is Ground) {
-      onGround = false;
+      //onGround = false;
+      if (collided) {
+        collidedDirection = FoxDirection.none;
+        collided = false;
+      } else {
+        onGround = false;
+      }
     }
     if (other is Wall) {
       collidedDirection = FoxDirection.none;
