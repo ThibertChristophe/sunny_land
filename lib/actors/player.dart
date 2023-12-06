@@ -158,12 +158,20 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     if (other is Ground) {
       Vector2 inter1 = intersectionPoints.elementAt(0);
       Vector2 inter2 = intersectionPoints.elementAt(1);
+      //print("INTERSECT Y: ${inter1.y}");
+      // print("INTERSECT Y 2: ${inter2.y}");
 
       // Detect si on touche le bas d'un ground
-      if (position.y > other.position.y + other.size.y) {
-        //print('EN BAS');
+      //if (position.y > other.position.y + other.size.y) {
+      if ((inter1.y >= other.position.y + other.size.y &&
+              inter2.y >= other.position.y + other.size.y) ||
+          (inter1.y >= other.position.y + other.size.y &&
+              inter2.y <= other.position.y + other.size.y) ||
+          (inter1.y <= other.position.y + other.size.y &&
+              inter2.y >= other.position.y + other.size.y)) {
+        // print('EN BAS');
         velocity.y = 0;
-      } else if (inter1.y > other.position.y) {
+      } else if (inter1.y > other.position.y && inter2.y > other.position.y) {
         // detecte si on touche le coté (wall)
         //print('WALL');
         if (!collided) {
@@ -172,7 +180,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           collidedDirection = horizontalDirection;
         }
       } else {
-        //print('DESSUS');
+        // print('DESSUS');
         if (intersectionPoints.length == 2) {
           final mid = (intersectionPoints.elementAt(0) +
                   intersectionPoints.elementAt(1)) /
@@ -361,10 +369,10 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         onGround = false;
       }
     }
-    if (other is Wall) {
-      collidedDirection = FoxDirection.none;
-      collided = false;
-    }
+    // if (other is Wall) {
+    //   collidedDirection = FoxDirection.none;
+    //   collided = false;
+    // }
   }
 
   /// Fonction de saut vérifie qu'on est pas déjà occupé de sauter ou de tomber
