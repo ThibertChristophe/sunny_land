@@ -179,7 +179,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           velocity.x = 0;
           collidedDirection = horizontalDirection;
         }
-      } else {
+      } else if (current != PlayerState.jumping) {
         // print('DESSUS');
         if (intersectionPoints.length == 2) {
           final mid = (intersectionPoints.elementAt(0) +
