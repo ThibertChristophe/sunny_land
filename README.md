@@ -1,6 +1,6 @@
 # sunny_land
 
-A new Flutter project.
+2D Plat-form game in Flame.
 
 ## Getting Started
 
