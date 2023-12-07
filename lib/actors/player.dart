@@ -159,15 +159,15 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     if (other is Ground) {
       Vector2 inter1 = intersectionPoints.elementAt(0);
       Vector2 inter2 = intersectionPoints.elementAt(1);
-      print(intersectionPoints.length);
+
       // print("INTERSECT : ${inter1.x.round()},${inter1.y.round()}");
       // print("INTERSECT2 : ${inter2.x.round()},${inter2.y.round()}");
       // print("BLOC LARGEUR: ${other.width.round() + other.x.round()}");
       // print("BLOC HAUTEUR :  ${other.height.round() + other.y.round()}");
 
+      // Sur notre ground
       if (inter1.y.round() == other.y.round() &&
           inter2.y.round() == other.y.round()) {
-        // print('DESSUS');
         if (intersectionPoints.length == 2) {
           final mid = (intersectionPoints.elementAt(0) +
                   intersectionPoints.elementAt(1)) /
@@ -179,25 +179,28 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
           position += collisionVector.scaled(penetrationDepth);
           velocity.y = 0;
-          if (other.position.y > position.y) {
-            onGround = true;
-          }
+
+          onGround = true;
         }
       }
-      if (inter1.x == other.width + other.x) {
+      // on colle à droite du mur
+      if (inter1.x == other.width + other.x &&
+          inter2.x == other.width + other.x) {
         if (!collided) {
           collided = true;
           velocity.x = 0;
           collidedDirection = horizontalDirection;
         }
       }
-      if (inter1.x == other.x) {
+      // on colle à gauche du mur
+      if (inter1.x == other.x && inter2.x == other.x) {
         if (!collided) {
           collided = true;
           velocity.x = 0;
           collidedDirection = horizontalDirection;
         }
       }
+      // on tappe sur le bas du sol
       if (inter1.y == other.height + other.y) {
         velocity.y = 0;
       }
