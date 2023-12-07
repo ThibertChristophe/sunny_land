@@ -7,7 +7,7 @@ import 'package:sunny_land/sunnyland.dart';
 class Ground extends PositionComponent with HasGameRef<SunnyLand> {
   Ground({required size, required position})
       : super(size: size, position: position) {
-    //debugMode = true;
+    debugMode = true;
   }
   // bool isWall = false;
 

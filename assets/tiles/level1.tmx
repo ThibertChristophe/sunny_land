@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="40">
+<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="47">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="575" columns="25">
   <image source="tileset.png" width="400" height="368"/>
   <tile id="26">
@@ -207,19 +207,26 @@
   <image source="middle.png" width="176" height="368"/>
  </tileset>
  <objectgroup id="9" name="grounds">
-  <object id="4" name="grounds" type="grounds" x="0.125" y="240" width="240" height="220.667"/>
-  <object id="5" name="grounds" type="grounds" x="240.875" y="368" width="95" height="229.905"/>
-  <object id="6" name="grounds" type="grounds" x="302" y="544" width="775.333" height="34.667"/>
-  <object id="7" name="grounds" type="grounds" x="576" y="512" width="255.89" height="32"/>
-  <object id="8" name="grounds" type="grounds" x="560" y="528" width="44.6667" height="30.6667"/>
-  <object id="9" name="grounds" type="grounds" x="794" y="528" width="54" height="28.6667"/>
-  <object id="10" name="grounds" type="grounds" x="1039.96" y="240" width="239" height="349.975"/>
-  <object id="11" name="grounds" type="grounds" x="400" y="240" width="464" height="176.689"/>
-  <object id="12" name="grounds" type="grounds" x="640.145" y="208" width="127.986" height="16.0725"/>
-  <object id="38" name="grounds" type="grounds" x="432" y="412" width="432" height="36"/>
-  <object id="39" name="grounds" type="grounds" x="400.364" y="416.545">
-   <polygon points="0,0 31.4545,31.6364 31.4545,0.181818"/>
-  </object>
+  <object id="4" name="grounds" type="grounds" x="0.125" y="240" width="240" height="220"/>
+  <object id="5" name="grounds" type="grounds" x="99.875" y="368" width="236" height="230"/>
+  <object id="6" name="grounds" type="grounds" x="302" y="544" width="775" height="78.6667"/>
+  <object id="7" name="grounds" type="grounds" x="576" y="512" width="255.909" height="95"/>
+  <object id="8" name="grounds" type="grounds" x="560" y="528" width="72.6667" height="92"/>
+  <object id="9" name="grounds" type="grounds" x="776" y="528" width="72" height="86.9091"/>
+  <object id="10" name="grounds" type="grounds" x="1040" y="240" width="239" height="350"/>
+  <object id="11" name="grounds" type="grounds" x="400" y="240" width="464" height="208"/>
+  <object id="12" name="grounds" type="grounds" x="640" y="208" width="128" height="16.0725"/>
+ </objectgroup>
+ <objectgroup id="13" name="gems">
+  <object id="40" name="gems" type="gems" x="288" y="320.667" width="16.3333" height="15.6667"/>
+  <object id="41" name="gems" type="gems" x="174.667" y="172" width="22.6667" height="22.6667"/>
+  <object id="42" name="gems" type="gems" x="1054.67" y="175.333" width="19.3333" height="20"/>
+  <object id="43" name="gems" type="gems" x="1008.67" y="368" width="16.6667" height="16"/>
+ </objectgroup>
+ <objectgroup id="14" name="enemies">
+  <object id="44" name="oposum" type="oposum" x="446.667" y="510" width="34" height="32.6667"/>
+  <object id="45" name="eagle" type="eagle" x="933.333" y="287.333" width="32.6667" height="29.3333"/>
+  <object id="46" name="frogs" type="frogs" x="542" y="205.333" width="32.6667" height="32.6667"/>
  </objectgroup>
  <objectgroup id="10" name="platforms">
   <object id="13" name="platforms" type="platforms" x="240" y="272" width="32" height="7"/>

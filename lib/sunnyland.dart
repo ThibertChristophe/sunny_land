@@ -1,4 +1,3 @@
-import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
@@ -9,12 +8,10 @@ import 'package:sunny_land/actors/eagle.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/hud.dart';
-import 'package:sunny_land/objects/cherry.dart';
 import 'package:sunny_land/objects/gem.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
 import 'package:flutter/material.dart';
-import 'package:sunny_land/obstacles/wall.dart';
 import 'actors/player.dart';
 
 class SunnyLand extends FlameGame
@@ -41,12 +38,12 @@ class SunnyLand extends FlameGame
 
     final grounds = myMap.tileMap.getLayer<ObjectGroup>('grounds');
     final platforms = myMap.tileMap.getLayer<ObjectGroup>('platforms');
-    //final walls = myMap.tileMap.getLayer<ObjectGroup>('walls');
+
     //final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
-    //final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
+    final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
     final player = myMap.tileMap.getLayer<ObjectGroup>('player');
 
-    // final enemies = myMap.tileMap.getLayer<ObjectGroup>('Enemies');
+    final enemies = myMap.tileMap.getLayer<ObjectGroup>('enemies');
     for (final obj in grounds!.objects) {
       add(Ground(
           size: Vector2(obj.width, obj.height),
@@ -57,33 +54,29 @@ class SunnyLand extends FlameGame
           size: Vector2(obj.width, obj.height),
           position: Vector2(obj.x, obj.y)));
     }
-    // for (final obj in walls!.objects) {
-    //   add(Wall(
-    //       size: Vector2(obj.width, obj.height),
-    //       position: Vector2(obj.x, obj.y)));
-    // }
+
     // for (final obj in cherries!.objects) {
     //   add(Cherry(position: Vector2(obj.x, obj.y)));
     // }
-    // for (final obj in gems!.objects) {
-    //   add(Gem(position: Vector2(obj.x, obj.y)));
-    // }
+    for (final obj in gems!.objects) {
+      add(Gem(position: Vector2(obj.x, obj.y)));
+    }
     for (final obj in player!.objects) {
       add(fox = Player(position: Vector2(obj.x, obj.y)));
     }
-    // for (final obj in enemies!.objects) {
-    //   switch (obj.class_) {
-    //     case 'Frogs':
-    //       add(Frog(position: Vector2(obj.x, obj.y)));
-    //       break;
-    //     case 'Oposum':
-    //       add(Oposum(position: Vector2(obj.x, obj.y)));
-    //       break;
-    //     case 'Eagle':
-    //       add(Eagle(position: Vector2(obj.x, obj.y)));
-    //       break;
-    //   }
-    // }
+    for (final obj in enemies!.objects) {
+      switch (obj.class_) {
+        case 'frogs':
+          add(Frog(position: Vector2(obj.x, obj.y)));
+          break;
+        case 'oposum':
+          add(Oposum(position: Vector2(obj.x, obj.y)));
+          break;
+        case 'eagle':
+          add(Eagle(position: Vector2(obj.x, obj.y)));
+          break;
+      }
+    }
 
     cameraComponent = CameraComponent(
       world: world,
@@ -96,7 +89,7 @@ class SunnyLand extends FlameGame
   @override
   void update(double dt) {
     super.update(dt);
-    updateJoystick();
+    //updateJoystick();
   }
 
   // =============================== JOYSTICK =========================

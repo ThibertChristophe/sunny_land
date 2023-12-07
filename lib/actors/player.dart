@@ -46,7 +46,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         SpriteAnimationData.sequenced(
           amount: 6,
           textureSize: Vector2.all(33),
-          stepTime: 0.15,
+          stepTime: 0.12,
         ),
       ),
       PlayerState.hitted: await game.loadSpriteAnimation(
@@ -54,7 +54,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         SpriteAnimationData.sequenced(
           amount: 2,
           textureSize: Vector2.all(33),
-          stepTime: 0.15,
+          stepTime: 0.12,
         ),
       ),
       PlayerState.idle: await game.loadSpriteAnimation(
@@ -62,7 +62,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         SpriteAnimationData.sequenced(
           amount: 4,
           textureSize: Vector2.all(33),
-          stepTime: 0.15,
+          stepTime: 0.12,
         ),
       ),
       PlayerState.sit: await game.loadSpriteAnimation(
@@ -155,31 +155,18 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
     // On stop notre chute quand on est sur du Ground
+
     if (other is Ground) {
       Vector2 inter1 = intersectionPoints.elementAt(0);
       Vector2 inter2 = intersectionPoints.elementAt(1);
-      //print("INTERSECT Y: ${inter1.y}");
-      // print("INTERSECT Y 2: ${inter2.y}");
+      print(intersectionPoints.length);
+      // print("INTERSECT : ${inter1.x.round()},${inter1.y.round()}");
+      // print("INTERSECT2 : ${inter2.x.round()},${inter2.y.round()}");
+      // print("BLOC LARGEUR: ${other.width.round() + other.x.round()}");
+      // print("BLOC HAUTEUR :  ${other.height.round() + other.y.round()}");
 
-      // Detect si on touche le bas d'un ground
-      //if (position.y > other.position.y + other.size.y) {
-      if ((inter1.y >= other.position.y + other.size.y &&
-              inter2.y >= other.position.y + other.size.y) ||
-          (inter1.y >= other.position.y + other.size.y &&
-              inter2.y <= other.position.y + other.size.y) ||
-          (inter1.y <= other.position.y + other.size.y &&
-              inter2.y >= other.position.y + other.size.y)) {
-        // print('EN BAS');
-        velocity.y = 0;
-      } else if (inter1.y > other.position.y && inter2.y > other.position.y) {
-        // detecte si on touche le coté (wall)
-        //print('WALL');
-        if (!collided) {
-          collided = true;
-          velocity.x = 0;
-          collidedDirection = horizontalDirection;
-        }
-      } else if (current != PlayerState.jumping) {
+      if (inter1.y.round() == other.y.round() &&
+          inter2.y.round() == other.y.round()) {
         // print('DESSUS');
         if (intersectionPoints.length == 2) {
           final mid = (intersectionPoints.elementAt(0) +
@@ -197,15 +184,25 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           }
         }
       }
-    }
-    if (other is Wall) {
-      if (!collided) {
-        velocity.x = 0;
-        collided = true;
-        // on enregistre de quel coté est notre collision
-        collidedDirection = horizontalDirection;
+      if (inter1.x == other.width + other.x) {
+        if (!collided) {
+          collided = true;
+          velocity.x = 0;
+          collidedDirection = horizontalDirection;
+        }
+      }
+      if (inter1.x == other.x) {
+        if (!collided) {
+          collided = true;
+          velocity.x = 0;
+          collidedDirection = horizontalDirection;
+        }
+      }
+      if (inter1.y == other.height + other.y) {
+        velocity.y = 0;
       }
     }
+
     if (other is Platform) {
       if (other.active) {
         // Si la plate forme est active (le joueur est au dessus) alors on active les collisions
@@ -361,18 +358,12 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       onGround = false;
     }
     if (other is Ground) {
-      //onGround = false;
       if (collided) {
         collidedDirection = FoxDirection.none;
         collided = false;
-      } else {
-        onGround = false;
       }
+      if (onGround) onGround = !onGround;
     }
-    // if (other is Wall) {
-    //   collidedDirection = FoxDirection.none;
-    //   collided = false;
-    // }
   }
 
   /// Fonction de saut vérifie qu'on est pas déjà occupé de sauter ou de tomber
