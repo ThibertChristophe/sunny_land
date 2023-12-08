@@ -161,8 +161,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         Vector2 inter1 = intersectionPoints.elementAt(0);
         Vector2 inter2 = intersectionPoints.elementAt(1);
 
-        print("INTERSECT : ${inter1.x.round()},${inter1.y.round()}");
-        print("INTERSECT2 : ${inter2.x.round()},${inter2.y.round()}");
+        //print("INTERSECT : ${inter1.x.round()},${inter1.y.round()}");
+        //print("INTERSECT2 : ${inter2.x.round()},${inter2.y.round()}");
         // print("BLOC LARGEUR: ${other.width.round() + other.x.round()}");
         // print("BLOC HAUTEUR :  ${other.height.round() + other.y.round()}");
 

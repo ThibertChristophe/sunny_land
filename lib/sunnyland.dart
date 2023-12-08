@@ -23,6 +23,7 @@ class SunnyLand extends FlameGame
   SunnyLand();
 
   late JoystickComponent joystick; // Joystick
+  late Hud hud;
   late Player fox;
   int gemsCollected = 0;
   late TiledComponent myMap;
@@ -80,19 +81,23 @@ class SunnyLand extends FlameGame
     // 1280x800
 
     camera.viewfinder.anchor = Anchor.topLeft;
-    camera.viewfinder.visibleGameSize = Vector2(480, 480);
-    //camera.viewfinder.position = Vector2(0, 0);
-    camera.follow(fox);
+    camera.viewfinder.visibleGameSize = Vector2(800, 600);
+    camera.viewfinder.position = Vector2(0, 0);
+    //camera.follow(fox);
 
-    camera.viewport.position = Vector2(50, 150);
-    camera.viewport.add(Hud(anchor: Anchor.topRight));
+    hud = Hud();
+    camera.viewport.add(hud);
     addJoystick();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
+    print("${camera.viewport.size} ${fox.position.x}");
     //updateJoystick();
+    if (fox.position.x >= 500 && fox.position.x < 925) {
+      camera.viewport.position.x -= fox.velocity.x * dt;
+    }
   }
 
   // =============================== JOYSTICK =========================
@@ -112,7 +117,7 @@ class SunnyLand extends FlameGame
       knobRadius: 75,
       margin: const EdgeInsets.only(left: 64, bottom: 64),
     );
-    world.add(joystick);
+    camera.viewport.add(joystick);
   }
 
   void updateJoystick() {
