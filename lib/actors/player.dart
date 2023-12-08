@@ -27,6 +27,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   FoxDirection horizontalDirection = FoxDirection.none;
   FoxDirection verticalDirection = FoxDirection.none;
   bool onGround = false;
+  bool onPlatForm = false;
   final double jumpSpeed = 600;
   final double terminalVelocity = 150;
 
@@ -115,7 +116,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     }
 
     // Gravité
-    if (!onGround) {
+    if (!onGround && !onPlatForm) {
       velocity.y += gravity;
       //position.y += velocity.y * dt;
       if (!isHitted) {
@@ -160,14 +161,19 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         Vector2 inter1 = intersectionPoints.elementAt(0);
         Vector2 inter2 = intersectionPoints.elementAt(1);
 
-        // print("INTERSECT : ${inter1.x.round()},${inter1.y.round()}");
-        // print("INTERSECT2 : ${inter2.x.round()},${inter2.y.round()}");
+        print("INTERSECT : ${inter1.x.round()},${inter1.y.round()}");
+        print("INTERSECT2 : ${inter2.x.round()},${inter2.y.round()}");
         // print("BLOC LARGEUR: ${other.width.round() + other.x.round()}");
         // print("BLOC HAUTEUR :  ${other.height.round() + other.y.round()}");
 
         // Sur notre ground
-        if (inter1.y.round() == other.y.round() &&
-            inter2.y.round() == other.y.round()) {
+        if ((inter1.y.round() == other.y.round() &&
+                    inter2.y.round() == other.y.round() ||
+                (inter2.y.round() >= other.y.round() &&
+                    inter1.y.round() == other.y.round()) ||
+                (inter1.y.round() >= other.y.round() &&
+                    inter2.y.round() == other.y.round())) &&
+            current != PlayerState.jumping) {
           if (intersectionPoints.length == 2) {
             final mid = (intersectionPoints.elementAt(0) +
                     intersectionPoints.elementAt(1)) /
@@ -189,7 +195,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           if (!collided) {
             collided = true;
             velocity.x = 0;
-            collidedDirection = horizontalDirection;
+            // collidedDirection = horizontalDirection;
+            collidedDirection = FoxDirection.left;
           }
         }
         // on colle à gauche du mur
@@ -197,7 +204,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           if (!collided) {
             collided = true;
             velocity.x = 0;
-            collidedDirection = horizontalDirection;
+            //collidedDirection = horizontalDirection;
+            collidedDirection = FoxDirection.right;
           }
         }
         // on tappe sur le bas du sol
@@ -222,7 +230,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
           position += collisionVector.scaled(penetrationDepth);
           velocity.y = 0;
-          onGround = true;
+
+          onPlatForm = true;
         }
       }
     }
@@ -359,14 +368,14 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   void onCollisionEnd(PositionComponent other) {
     super.onCollisionEnd(other);
     if (other is Platform) {
-      onGround = false;
+      onPlatForm = false;
     }
     if (other is Ground) {
       if (collided) {
         collidedDirection = FoxDirection.none;
         collided = false;
       }
-      if (onGround) onGround = !onGround;
+      if (onGround) onGround = false;
     }
   }
 
@@ -376,6 +385,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       velocity.y -= _jumpLength;
       current = PlayerState.jumping;
       onGround = false;
+      onPlatForm = false;
     }
   }
 

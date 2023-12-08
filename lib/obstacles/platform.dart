@@ -8,7 +8,7 @@ import 'package:sunny_land/sunnyland.dart';
 class Platform extends PositionComponent with HasGameRef<SunnyLand> {
   Platform({required size, required position})
       : super(size: size, position: position) {
-    //debugMode = true;
+    debugMode = true;
   }
 
   bool active = false; //s'active et desactive
@@ -19,7 +19,7 @@ class Platform extends PositionComponent with HasGameRef<SunnyLand> {
     // Detecte si le joueur est au dessus de la plate forme
     // Si il est au dessus alors on active
 
-    if (game.fox.y + 15 < position.y) {
+    if (game.fox.y + (game.fox.height / 2) < position.y) {
       active = true;
     } else {
       active = false;
