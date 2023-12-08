@@ -4,12 +4,7 @@ import 'package:sunny_land/sunnyland.dart';
 
 class Hud extends PositionComponent with HasGameRef<SunnyLand> {
   Hud({
-    super.position,
-    super.size,
-    super.scale,
-    super.angle,
-    super.anchor,
-    super.children,
+    anchor,
     super.priority = 10,
   });
 
