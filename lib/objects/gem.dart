@@ -33,7 +33,7 @@ class Gem extends SpriteAnimationGroupComponent<GemState>
         SpriteAnimationData.sequenced(
           amount: 5,
           textureSize: Vector2.all(33),
-          stepTime: 0.15,
+          stepTime: 0.12,
           loop: false,
         ),
       ),
