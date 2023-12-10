@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:sunny_land/sunnyland.dart';
 
 enum GemState { idle, hit }
@@ -44,6 +45,9 @@ class Gem extends SpriteAnimationGroupComponent<GemState>
   }
 
   void hitted() {
+    if (current != GemState.hit) {
+      FlameAudio.play('coin.wav');
+    }
     current = GemState.hit;
     add(RemoveEffect(
       delay: 0.75,

@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flame: ^1.10.1
   flame_tiled: ^1.16.0
+  flame_audio: ^2.1.5
 
 dev_dependencies:
   flutter_test:
@@ -32,4 +33,5 @@ flutter:
   assets:
   - assets/images/
   - assets/tiles/
+  - assets/audio/
 

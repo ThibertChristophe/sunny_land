@@ -1,8 +1,8 @@
-import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sunny_land/actors/eagle.dart';
@@ -21,7 +21,7 @@ class SunnyLand extends FlameGame
         HasKeyboardHandlerComponents,
         HasCollisionDetection {
   SunnyLand();
-
+  bool musicPlaying = false;
   late JoystickComponent joystick; // Joystick
   late Hud hud;
   late Player fox;
@@ -32,10 +32,53 @@ class SunnyLand extends FlameGame
   Future<void> onLoad() async {
     await super.onLoad();
 
-    myMap = await TiledComponent.load("level1.tmx", Vector2.all(16));
+    addMusic();
 
+    myMap = await TiledComponent.load("level1.tmx", Vector2.all(16));
     world.add(myMap);
 
+    buildMap();
+
+    // 1280x800
+    camera.viewfinder.anchor = Anchor.topLeft;
+    camera.viewfinder.visibleGameSize = Vector2(800, 600);
+    camera.viewfinder.position = Vector2(0, 0);
+    camera.viewport.anchor = Anchor.topLeft;
+
+    camera.viewport.add(Hud());
+    addJoystick();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    //updateJoystick();
+    // ajuste la camera quand on passe la moitié de l'écran
+    if (fox.position.x >= 500 && fox.position.x < 925) {
+      //camera.viewfinder.position.x += fox.velocity.x * dt;
+      camera.viewfinder.position = Vector2(
+          camera.viewfinder.position.x + fox.velocity.x * dt,
+          camera.viewfinder.position.y);
+    }
+  }
+
+  @override
+  void onDoubleTapDown(DoubleTapDownEvent event) {
+    fox.jump();
+  }
+
+  // =============================== MUSIC =========================
+  void addMusic() {
+    FlameAudio.bgm.initialize();
+
+    // if (!musicPlaying) {
+    //   FlameAudio.bgm.play('background.mp3', volume: .5);
+    //   musicPlaying = true;
+    // }
+  }
+
+  // =============================== MAP =========================
+  void buildMap() {
     final grounds = myMap.tileMap.getLayer<ObjectGroup>('grounds');
     final platforms = myMap.tileMap.getLayer<ObjectGroup>('platforms');
 
@@ -77,29 +120,6 @@ class SunnyLand extends FlameGame
           break;
       }
     }
-
-    // 1280x800
-
-    camera.viewfinder.anchor = Anchor.topLeft;
-    camera.viewfinder.visibleGameSize = Vector2(800, 600);
-    camera.viewfinder.position = Vector2(0, 0);
-    camera.viewport.anchor = Anchor.topLeft;
-
-    addJoystick();
-    camera.viewport.add(Hud());
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-    //updateJoystick();
-    // ajuste la camera quand on passe la moitié de l'écran
-    if (fox.position.x >= 500 && fox.position.x < 925) {
-      //camera.viewfinder.position.x += fox.velocity.x * dt;
-      camera.viewfinder.position = Vector2(
-          camera.viewfinder.position.x + fox.velocity.x * dt,
-          camera.viewfinder.position.y);
-    }
   }
 
   // =============================== JOYSTICK =========================
@@ -123,7 +143,7 @@ class SunnyLand extends FlameGame
   }
 
   void updateJoystick() {
-    if (fox.current == PlayerState.hitted) {
+    if (fox.current == FoxState.hitted) {
       fox.verticalDirection = FoxDirection.none;
       fox.horizontalDirection = FoxDirection.none;
     } else {
@@ -150,10 +170,5 @@ class SunnyLand extends FlameGame
           break;
       }
     }
-  }
-
-  @override
-  void onDoubleTapDown(DoubleTapDownEvent event) {
-    fox.jump();
   }
 }

@@ -13,9 +13,9 @@ import '../sunnyland.dart';
 
 enum FoxDirection { left, right, none, down }
 
-enum PlayerState { running, jumping, falling, idle, hitted, sit }
+enum FoxState { running, jumping, falling, idle, hitted, sit }
 
-class Player extends SpriteAnimationGroupComponent<PlayerState>
+class Player extends SpriteAnimationGroupComponent<FoxState>
     with CollisionCallbacks, KeyboardHandler, HasGameRef<SunnyLand> {
   Player({required super.position})
       : super(size: Vector2.all(33), anchor: Anchor.center) {
@@ -41,7 +41,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   @override
   void onLoad() async {
     animations = {
-      PlayerState.running: await game.loadSpriteAnimation(
+      FoxState.running: await game.loadSpriteAnimation(
         'run.png',
         SpriteAnimationData.sequenced(
           amount: 6,
@@ -49,7 +49,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           stepTime: 0.12,
         ),
       ),
-      PlayerState.hitted: await game.loadSpriteAnimation(
+      FoxState.hitted: await game.loadSpriteAnimation(
         'hitted.png',
         SpriteAnimationData.sequenced(
           amount: 2,
@@ -57,7 +57,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           stepTime: 0.12,
         ),
       ),
-      PlayerState.idle: await game.loadSpriteAnimation(
+      FoxState.idle: await game.loadSpriteAnimation(
         'idle.png',
         SpriteAnimationData.sequenced(
           amount: 4,
@@ -65,7 +65,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           stepTime: 0.12,
         ),
       ),
-      PlayerState.sit: await game.loadSpriteAnimation(
+      FoxState.sit: await game.loadSpriteAnimation(
         'down.png',
         SpriteAnimationData.sequenced(
           amount: 3,
@@ -74,17 +74,17 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
           loop: false,
         ),
       ),
-      PlayerState.jumping: SpriteAnimation.spriteList(
+      FoxState.jumping: SpriteAnimation.spriteList(
         [await game.loadSprite('jumping.png')],
         stepTime: double.infinity,
       ),
-      PlayerState.falling: SpriteAnimation.spriteList(
+      FoxState.falling: SpriteAnimation.spriteList(
         [await game.loadSprite('falling.png')],
         stepTime: double.infinity,
       ),
     };
 
-    current = PlayerState.idle;
+    current = FoxState.idle;
 
     //add(CircleHitbox());
     add(PolygonHitbox([
@@ -122,7 +122,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       if (!isHitted) {
         // changement de > 7 en > 0
         if (velocity.y > 0) {
-          current = PlayerState.falling;
+          current = FoxState.falling;
           isFalling = true;
         }
       }
@@ -130,11 +130,11 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       isFalling = false;
       if (!isHitted) {
         if (verticalDirection == FoxDirection.down) {
-          current = PlayerState.sit;
+          current = FoxState.sit;
         } else {
           current = (horizontalDirection == FoxDirection.none)
-              ? PlayerState.idle
-              : PlayerState.running;
+              ? FoxState.idle
+              : FoxState.running;
         }
       }
       // Prevent from jumping to crazy fast as well as descending too fast and
@@ -161,11 +161,6 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
         Vector2 inter1 = intersectionPoints.elementAt(0);
         Vector2 inter2 = intersectionPoints.elementAt(1);
 
-        //print("INTERSECT : ${inter1.x.round()},${inter1.y.round()}");
-        //print("INTERSECT2 : ${inter2.x.round()},${inter2.y.round()}");
-        // print("BLOC LARGEUR: ${other.width.round() + other.x.round()}");
-        // print("BLOC HAUTEUR :  ${other.height.round() + other.y.round()}");
-
         // Sur notre ground
         if ((inter1.y.round() == other.y.round() &&
                     inter2.y.round() == other.y.round() ||
@@ -173,7 +168,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
                     inter1.y.round() == other.y.round()) ||
                 (inter1.y.round() >= other.y.round() &&
                     inter2.y.round() == other.y.round())) &&
-            current != PlayerState.jumping) {
+            current != FoxState.jumping) {
           if (intersectionPoints.length == 2) {
             final mid = (intersectionPoints.elementAt(0) +
                     intersectionPoints.elementAt(1)) /
@@ -261,12 +256,12 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
             collisionVector.normalize();
 
             position += collisionVector.scaled(penetrationDepth);
-            current = PlayerState.jumping;
+            current = FoxState.jumping;
             velocity.y -= _jumpLength;
 
             other.die();
-          } else if (current != PlayerState.hitted) {
-            current = PlayerState.hitted;
+          } else if (current != FoxState.hitted) {
+            current = FoxState.hitted;
             isHitted = true;
             hittedEffect(intersectionPoints, other);
           }
@@ -289,12 +284,12 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
             position += collisionVector.scaled(penetrationDepth);
 
-            current = PlayerState.jumping;
+            current = FoxState.jumping;
             velocity.y -= _jumpLength;
 
             other.die();
-          } else if (current != PlayerState.hitted) {
-            current = PlayerState.hitted;
+          } else if (current != FoxState.hitted) {
+            current = FoxState.hitted;
             isHitted = true;
             hittedEffect(intersectionPoints, other);
           }
@@ -317,12 +312,12 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
             position += collisionVector.scaled(penetrationDepth);
 
-            current = PlayerState.jumping;
+            current = FoxState.jumping;
             velocity.y -= _jumpLength;
 
             other.die();
-          } else if (current != PlayerState.hitted) {
-            current = PlayerState.hitted;
+          } else if (current != FoxState.hitted) {
+            current = FoxState.hitted;
             isHitted = true;
             hittedEffect(intersectionPoints, other);
           }
@@ -381,9 +376,9 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
   /// Fonction de saut vérifie qu'on est pas déjà occupé de sauter ou de tomber
   void jump() {
-    if (current != PlayerState.jumping && current != PlayerState.falling) {
+    if (current != FoxState.jumping && current != FoxState.falling) {
       velocity.y -= _jumpLength;
-      current = PlayerState.jumping;
+      current = FoxState.jumping;
       onGround = false;
       onPlatForm = false;
     }
