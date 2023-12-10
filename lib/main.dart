@@ -1,12 +1,16 @@
 import 'package:flame/game.dart';
-import 'package:flutter/widgets.dart';
-import 'package:sunny_land/sunnyland.dart';
 import 'package:flutter/material.dart';
+import 'package:sunny_land/main_menu.dart';
+import 'package:sunny_land/sunnyland.dart';
 
 void main() {
   runApp(
-    const GameWidget<SunnyLand>.controlled(
+    GameWidget<SunnyLand>.controlled(
       gameFactory: SunnyLand.new,
+      overlayBuilderMap: {
+        'MainMenu': (_, game) => MainMenu(game: game),
+      },
+      initialActiveOverlays: const ['MainMenu'],
     ),
   );
 }

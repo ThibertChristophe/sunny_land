@@ -18,6 +18,7 @@ dependencies:
   flame: ^1.10.1
   flame_tiled: ^1.16.0
   flame_audio: ^2.1.5
+  flutter_animate: ^4.3.0
 
 dev_dependencies:
   flutter_test:

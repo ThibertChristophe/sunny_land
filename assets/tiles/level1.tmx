@@ -226,7 +226,7 @@
   <object id="42" name="gems" type="gems" x="1054.67" y="175.333" width="19.3333" height="20"/>
   <object id="43" name="gems" type="gems" x="1008.67" y="368" width="16.6667" height="16"/>
  </objectgroup>
- <objectgroup id="14" name="ennemies">
+ <objectgroup id="14" name="enemies">
   <object id="44" name="oposum" type="oposum" x="446.667" y="510" width="34" height="32.6667"/>
   <object id="45" name="eagle" type="eagle" x="933.333" y="287.333" width="32.6667" height="29.3333"/>
   <object id="46" name="frogs" type="frogs" x="520" y="206" width="32.6667" height="32.6667"/>
