@@ -55,7 +55,6 @@ class SunnyLand extends FlameGame
     //updateJoystick();
     // ajuste la camera quand on passe la moitié de l'écran
     if (fox.position.x >= 500 && fox.position.x < 925) {
-      //camera.viewfinder.position.x += fox.velocity.x * dt;
       camera.viewfinder.position = Vector2(
           camera.viewfinder.position.x + fox.velocity.x * dt,
           camera.viewfinder.position.y);
