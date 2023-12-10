@@ -83,9 +83,9 @@ class SunnyLand extends FlameGame
     camera.viewfinder.anchor = Anchor.topLeft;
     camera.viewfinder.visibleGameSize = Vector2(800, 600);
     camera.viewfinder.position = Vector2(0, 0);
-    //camera.follow(fox);
 
     hud = Hud();
+
     camera.viewport.add(hud);
     addJoystick();
   }
@@ -93,8 +93,9 @@ class SunnyLand extends FlameGame
   @override
   void update(double dt) {
     super.update(dt);
-    print("${camera.viewport.size} ${fox.position.x}");
+    print("Viewport size : ${camera.viewport.size}");
     //updateJoystick();
+    // ajuste la camera quand on passe la moitié de l'écran
     if (fox.position.x >= 500 && fox.position.x < 925) {
       camera.viewport.position.x -= fox.velocity.x * dt;
     }

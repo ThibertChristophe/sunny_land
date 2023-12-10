@@ -8,7 +8,7 @@ import 'package:sunny_land/sunnyland.dart';
 class Platform extends PositionComponent with HasGameRef<SunnyLand> {
   Platform({required size, required position})
       : super(size: size, position: position) {
-    debugMode = true;
+    //debugMode = true;
   }
 
   bool active = false; //s'active et desactive
