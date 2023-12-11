@@ -24,7 +24,9 @@ class MainMenu extends StatelessWidget {
               decoration: const BoxDecoration(
                   color: Colors.red,
                   image: DecorationImage(
-                      image: AssetImage('images/menu.png'), fit: BoxFit.cover)),
+                    image: AssetImage('images/menu.png'),
+                    fit: BoxFit.cover,
+                  )),
             ),
             Center(
               child: Column(
@@ -33,8 +35,9 @@ class MainMenu extends StatelessWidget {
                   const SizedBox(
                     width: 400,
                     child: Image(
-                        image: AssetImage('images/titre.png'),
-                        fit: BoxFit.cover),
+                      image: AssetImage('images/titre.png'),
+                      fit: BoxFit.cover,
+                    ),
                   ).animate().scale(),
                   const SizedBox(height: 50),
                   SizedBox(
@@ -44,7 +47,8 @@ class MainMenu extends StatelessWidget {
                       fit: BoxFit.cover,
                     )
                         .animate(
-                            onPlay: (controller) => controller.repeat(),
+                            onPlay: (controller) => controller
+                                .repeat(), // repetition de l'effet de zoom
                             delay: 500.ms)
                         .fadeIn(delay: 400.ms)
                         .then(delay: 200.ms)

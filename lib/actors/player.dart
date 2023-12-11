@@ -34,8 +34,8 @@ class Player extends SpriteAnimationGroupComponent<FoxState>
   final double _jumpLength = 250;
 
   bool isFalling = false;
-  bool isHitted = false;
-  bool collided = false;
+  bool isHitted = false; // touché par un monstre
+  bool collided = false; // quand on touche un mur
   FoxDirection collidedDirection = FoxDirection.none;
 
   @override
@@ -329,6 +329,7 @@ class Player extends SpriteAnimationGroupComponent<FoxState>
   /// Joue l'effet d'être touché
   /// Nous fais faire un bond en arrière
   void hittedEffect(Set<Vector2> intersectionPoints, PositionComponent other) {
+    // Si on est touché sur notre gauche
     if (intersectionPoints.first.x < other.position.x) {
       add(
         SequenceEffect(
@@ -345,6 +346,7 @@ class Player extends SpriteAnimationGroupComponent<FoxState>
         ),
       );
     }
+    // Si on est touché sur notre droite
     if (intersectionPoints.first.x > other.position.x) {
       add(SequenceEffect([
         MoveEffect.by(
