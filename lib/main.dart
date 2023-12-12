@@ -1,9 +1,13 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sunny_land/main_menu.dart';
 import 'package:sunny_land/sunnyland.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   runApp(
     GameWidget<SunnyLand>.controlled(
       gameFactory: SunnyLand.new,

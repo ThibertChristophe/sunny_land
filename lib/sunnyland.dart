@@ -1,10 +1,11 @@
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flame/game.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flame/flame.dart';
-import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sunny_land/actors/eagle.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
@@ -12,8 +13,7 @@ import 'package:sunny_land/hud.dart';
 import 'package:sunny_land/objects/gem.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
-import 'package:flutter/material.dart';
-import 'actors/player.dart';
+import 'package:sunny_land/actors/player.dart';
 
 class SunnyLand extends FlameGame
     with
@@ -22,17 +22,18 @@ class SunnyLand extends FlameGame
         HasCollisionDetection {
   SunnyLand();
   bool musicPlaying = false;
-  late JoystickComponent joystick; // Joystick
   late Hud hud;
   late Player fox;
   int gemsCollected = 0;
   late TiledComponent myMap;
+  late JoystickComponent joystick; // Joystick
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
     addMusic();
+    addJoystick();
 
     myMap = await TiledComponent.load("level1.tmx", Vector2.all(16));
     world.add(myMap);
@@ -41,24 +42,23 @@ class SunnyLand extends FlameGame
 
     // 1280x800
     camera.viewfinder.anchor = Anchor.topLeft;
-    camera.viewfinder.visibleGameSize = Vector2(800, 600);
-    camera.viewfinder.position = Vector2(0, 0);
+    camera.viewfinder.visibleGameSize = Vector2(500, 570);
+    camera.viewfinder.position = Vector2(0, 15);
     camera.viewport.anchor = Anchor.topLeft;
 
     camera.viewport.add(Hud());
-    addJoystick();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    //updateJoystick();
     // ajuste la camera quand on passe la moitié de l'écran
     if (fox.position.x >= 500 && fox.position.x < 925) {
       camera.viewfinder.position = Vector2(
           camera.viewfinder.position.x + fox.velocity.x * dt,
           camera.viewfinder.position.y);
     }
+    updateJoystick();
   }
 
   @override
@@ -138,6 +138,7 @@ class SunnyLand extends FlameGame
       knobRadius: 75,
       margin: const EdgeInsets.only(left: 64, bottom: 64),
     );
+
     camera.viewport.add(joystick);
   }
 

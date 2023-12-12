@@ -23,7 +23,7 @@ class Player extends SpriteAnimationGroupComponent<FoxState>
   }
   double gravity = 7;
   Vector2 velocity = Vector2(0, 0);
-  double moveSpeed = 160;
+  double moveSpeed = 120;
   FoxDirection horizontalDirection = FoxDirection.none;
   FoxDirection verticalDirection = FoxDirection.none;
   bool onGround = false;

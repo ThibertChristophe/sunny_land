@@ -24,7 +24,7 @@ class MainMenu extends StatelessWidget {
               decoration: const BoxDecoration(
                   color: Colors.red,
                   image: DecorationImage(
-                    image: AssetImage('images/menu.png'),
+                    image: AssetImage('assets/images/menu.png'),
                     fit: BoxFit.cover,
                   )),
             ),
@@ -35,7 +35,7 @@ class MainMenu extends StatelessWidget {
                   const SizedBox(
                     width: 400,
                     child: Image(
-                      image: AssetImage('images/titre.png'),
+                      image: AssetImage('assets/images/titre.png'),
                       fit: BoxFit.cover,
                     ),
                   ).animate().scale(),
@@ -43,7 +43,7 @@ class MainMenu extends StatelessWidget {
                   SizedBox(
                     width: 120,
                     child: const Image(
-                      image: AssetImage('images/playy.png'),
+                      image: AssetImage('assets/images/playy.png'),
                       fit: BoxFit.cover,
                     )
                         .animate(
