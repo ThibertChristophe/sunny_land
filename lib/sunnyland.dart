@@ -43,7 +43,7 @@ class SunnyLand extends FlameGame
     // 1280x800
     camera.viewfinder.anchor = Anchor.topLeft;
     camera.viewfinder.visibleGameSize = Vector2(500, 570);
-    camera.viewfinder.position = Vector2(0, 15);
+    camera.viewfinder.position = Vector2(0, 0);
     camera.viewport.anchor = Anchor.topLeft;
 
     camera.viewport.add(Hud());
@@ -52,13 +52,13 @@ class SunnyLand extends FlameGame
   @override
   void update(double dt) {
     super.update(dt);
+    //updateJoystick();
     // ajuste la camera quand on passe la moitié de l'écran
     if (fox.position.x >= 500 && fox.position.x < 925) {
       camera.viewfinder.position = Vector2(
           camera.viewfinder.position.x + fox.velocity.x * dt,
           camera.viewfinder.position.y);
     }
-    updateJoystick();
   }
 
   @override
@@ -84,7 +84,7 @@ class SunnyLand extends FlameGame
     //final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
     final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
     final player = myMap.tileMap.getLayer<ObjectGroup>('player');
-
+    final interacts = myMap.tileMap.getLayer<ObjectGroup>('interact');
     final enemies = myMap.tileMap.getLayer<ObjectGroup>('enemies');
     for (final obj in grounds!.objects) {
       world.add(Ground(
