@@ -10,7 +10,7 @@ class Door extends SpriteAnimationGroupComponent<CherryState>
   Door({size, required position})
       : super(
             size: Vector2.all(21), position: position, anchor: Anchor.topLeft) {
-    //debugMode = true;
+    debugMode = true;
   }
 
   @override

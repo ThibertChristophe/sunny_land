@@ -22,11 +22,10 @@ class MainMenu extends StatelessWidget {
           children: [
             Container(
               decoration: const BoxDecoration(
-                  color: Colors.red,
                   image: DecorationImage(
-                    image: AssetImage('assets/images/menu.png'),
-                    fit: BoxFit.cover,
-                  )),
+                image: AssetImage('assets/images/menu.png'),
+                fit: BoxFit.cover,
+              )),
             ),
             Center(
               child: Column(

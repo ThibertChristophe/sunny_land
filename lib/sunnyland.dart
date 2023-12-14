@@ -10,6 +10,7 @@ import 'package:sunny_land/actors/eagle.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/hud.dart';
+import 'package:sunny_land/objects/door.dart';
 import 'package:sunny_land/objects/gem.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
@@ -96,7 +97,9 @@ class SunnyLand extends FlameGame
           size: Vector2(obj.width, obj.height),
           position: Vector2(obj.x, obj.y)));
     }
-
+    for (final obj in interacts!.objects) {
+      add(Door(position: Vector2(obj.x, obj.y)));
+    }
     // for (final obj in cherries!.objects) {
     //   add(Cherry(position: Vector2(obj.x, obj.y)));
     // }
