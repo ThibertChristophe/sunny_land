@@ -87,39 +87,52 @@ class SunnyLand extends FlameGame
     final player = myMap.tileMap.getLayer<ObjectGroup>('player');
     final interacts = myMap.tileMap.getLayer<ObjectGroup>('interact');
     final enemies = myMap.tileMap.getLayer<ObjectGroup>('enemies');
-    for (final obj in grounds!.objects) {
-      world.add(Ground(
-          size: Vector2(obj.width, obj.height),
-          position: Vector2(obj.x, obj.y)));
+
+    if (grounds != null) {
+      for (final obj in grounds.objects) {
+        world.add(Ground(
+            size: Vector2(obj.width, obj.height),
+            position: Vector2(obj.x, obj.y)));
+      }
     }
-    for (final obj in platforms!.objects) {
-      world.add(Platform(
-          size: Vector2(obj.width, obj.height),
-          position: Vector2(obj.x, obj.y)));
+    if (platforms != null) {
+      for (final obj in platforms.objects) {
+        world.add(Platform(
+            size: Vector2(obj.width, obj.height),
+            position: Vector2(obj.x, obj.y)));
+      }
     }
-    for (final obj in interacts!.objects) {
-      add(Door(position: Vector2(obj.x, obj.y)));
+    if (interacts != null) {
+      for (final obj in interacts.objects) {
+        add(Door(position: Vector2(obj.x, obj.y)));
+      }
     }
     // for (final obj in cherries!.objects) {
     //   add(Cherry(position: Vector2(obj.x, obj.y)));
     // }
-    for (final obj in gems!.objects) {
-      world.add(Gem(position: Vector2(obj.x, obj.y)));
+    if (gems != null) {
+      for (final obj in gems.objects) {
+        world.add(Gem(position: Vector2(obj.x, obj.y)));
+      }
     }
-    for (final obj in player!.objects) {
-      world.add(fox = Player(position: Vector2(obj.x, obj.y)));
+    if (player != null) {
+      for (final obj in player.objects) {
+        world.add(fox = Player(position: Vector2(obj.x, obj.y)));
+      }
     }
-    for (final obj in enemies!.objects) {
-      switch (obj.class_) {
-        case 'frogs':
-          world.add(Frog(position: Vector2(obj.x, obj.y)));
-          break;
-        case 'oposum':
-          world.add(Oposum(position: Vector2(obj.x, obj.y)));
-          break;
-        case 'eagle':
-          world.add(Eagle(position: Vector2(obj.x, obj.y)));
-          break;
+    if (enemies != null) {
+      for (final obj in enemies.objects) {
+        switch (obj.class_) {
+          case 'frogs':
+            world.add(Frog(position: Vector2(obj.x, obj.y)));
+            break;
+          case 'oposum':
+            world.add(Oposum(position: Vector2(obj.x, obj.y)));
+            break;
+          case 'eagle':
+            world.add(Eagle(position: Vector2(obj.x, obj.y)));
+            break;
+        }
       }
     }
   }
