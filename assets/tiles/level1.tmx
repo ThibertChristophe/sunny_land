@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="49">
+<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="50">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="575" columns="25">
   <image source="tileset.png" width="400" height="368"/>
   <tile id="26">
@@ -467,5 +467,8 @@
  </layer>
  <objectgroup id="16" name="interact">
   <object id="48" name="door" type="door" x="1206" y="208" width="20" height="32"/>
+ </objectgroup>
+ <objectgroup id="17" name="endButton">
+  <object id="49" name="endButton" type="endButton" x="1207" y="187" width="19" height="52"/>
  </objectgroup>
 </map>

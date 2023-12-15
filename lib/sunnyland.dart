@@ -11,6 +11,7 @@ import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/hud.dart';
 import 'package:sunny_land/objects/door.dart';
+import 'package:sunny_land/objects/end.dart';
 import 'package:sunny_land/objects/gem.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
@@ -85,8 +86,17 @@ class SunnyLand extends FlameGame
     //final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
     final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
     final player = myMap.tileMap.getLayer<ObjectGroup>('player');
-    final interacts = myMap.tileMap.getLayer<ObjectGroup>('interact');
+    final doors = myMap.tileMap.getLayer<ObjectGroup>('interact');
     final enemies = myMap.tileMap.getLayer<ObjectGroup>('enemies');
+    final endButton = myMap.tileMap.getLayer<ObjectGroup>('endButton');
+
+    if (endButton != null) {
+      for (final obj in endButton.objects) {
+        world.add(End(
+            size: Vector2(obj.width, obj.height),
+            position: Vector2(obj.x, obj.y)));
+      }
+    }
 
     if (grounds != null) {
       for (final obj in grounds.objects) {
@@ -102,9 +112,9 @@ class SunnyLand extends FlameGame
             position: Vector2(obj.x, obj.y)));
       }
     }
-    if (interacts != null) {
-      for (final obj in interacts.objects) {
-        add(Door(position: Vector2(obj.x, obj.y)));
+    if (doors != null) {
+      for (final obj in doors.objects) {
+        world.add(Door(position: Vector2(obj.x, obj.y)));
       }
     }
     // for (final obj in cherries!.objects) {
