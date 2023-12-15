@@ -249,6 +249,9 @@
  <objectgroup id="7" name="player">
   <object id="3" name="player" type="player" x="44.3333" y="205.667" width="33" height="33"/>
  </objectgroup>
+ <objectgroup id="17" name="endButton">
+  <object id="49" name="endButton" type="endButton" x="1207" y="187" width="19" height="52"/>
+ </objectgroup>
  <layer id="1" name="fond" width="80" height="50">
   <data encoding="csv">
 940,941,942,943,944,945,946,947,948,949,950,951,952,953,954,955,956,957,958,959,960,961,962,963,940,941,942,943,944,945,946,947,948,949,950,951,952,953,954,955,956,957,958,959,960,961,962,963,940,941,942,943,944,945,946,947,948,949,950,951,952,953,954,955,956,957,958,959,960,961,962,963,940,941,942,943,944,945,946,947,
@@ -465,10 +468,4 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="16" name="interact">
-  <object id="48" name="door" type="door" x="1206" y="208" width="20" height="32"/>
- </objectgroup>
- <objectgroup id="17" name="endButton">
-  <object id="49" name="endButton" type="endButton" x="1207" y="187" width="19" height="52"/>
- </objectgroup>
 </map>

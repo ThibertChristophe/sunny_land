@@ -8,8 +8,7 @@ import 'package:sunny_land/sunnyland.dart';
 class Door extends SpriteAnimationGroupComponent<CherryState>
     with HasGameRef<SunnyLand> {
   Door({size, required position})
-      : super(
-            size: Vector2.all(21), position: position, anchor: Anchor.topLeft) {
+      : super(size: size, position: position, anchor: Anchor.topLeft) {
     debugMode = true;
   }
 

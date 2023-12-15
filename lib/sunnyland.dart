@@ -10,7 +10,6 @@ import 'package:sunny_land/actors/eagle.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/hud.dart';
-import 'package:sunny_land/objects/door.dart';
 import 'package:sunny_land/objects/end.dart';
 import 'package:sunny_land/objects/gem.dart';
 import 'package:sunny_land/obstacles/ground.dart';
@@ -68,7 +67,7 @@ class SunnyLand extends FlameGame
     fox.jump();
   }
 
-  // =============================== MUSIC =========================
+// =============================== MUSIC =========================
   void addMusic() {
     FlameAudio.bgm.initialize();
 
@@ -86,13 +85,12 @@ class SunnyLand extends FlameGame
     //final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
     final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
     final player = myMap.tileMap.getLayer<ObjectGroup>('player');
-    final doors = myMap.tileMap.getLayer<ObjectGroup>('interact');
     final enemies = myMap.tileMap.getLayer<ObjectGroup>('enemies');
     final endButton = myMap.tileMap.getLayer<ObjectGroup>('endButton');
 
     if (endButton != null) {
       for (final obj in endButton.objects) {
-        world.add(End(
+        world.add(EndButton(
             size: Vector2(obj.width, obj.height),
             position: Vector2(obj.x, obj.y)));
       }
@@ -110,11 +108,6 @@ class SunnyLand extends FlameGame
         world.add(Platform(
             size: Vector2(obj.width, obj.height),
             position: Vector2(obj.x, obj.y)));
-      }
-    }
-    if (doors != null) {
-      for (final obj in doors.objects) {
-        world.add(Door(position: Vector2(obj.x, obj.y)));
       }
     }
     // for (final obj in cherries!.objects) {

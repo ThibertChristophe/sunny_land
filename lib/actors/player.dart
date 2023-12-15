@@ -6,8 +6,6 @@ import 'package:sunny_land/actors/eagle.dart';
 import 'package:sunny_land/actors/frog.dart';
 import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/objects/cherry.dart';
-import 'package:sunny_land/objects/door.dart';
-import 'package:sunny_land/objects/end.dart';
 import 'package:sunny_land/objects/gem.dart';
 import 'package:sunny_land/obstacles/ground.dart';
 import 'package:sunny_land/obstacles/platform.dart';
@@ -156,13 +154,8 @@ class Player extends SpriteAnimationGroupComponent<FoxState>
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
+
     // On stop notre chute quand on est sur du Ground
-    if (other is Door) {
-      print('touch door');
-    }
-    if (other is End) {
-      print('touch end');
-    }
     if (other is Ground) {
       if (intersectionPoints.length == 2) {
         Vector2 inter1 = intersectionPoints.elementAt(0);
