@@ -10,7 +10,8 @@ enum EndButtonState { active, inactive }
 class EndButton extends SpriteAnimationGroupComponent<EndButtonState>
     with TapCallbacks, HasGameRef<SunnyLand> {
   EndButton({size, required position})
-      : super(size: size, position: position, anchor: Anchor.topLeft) {
+      : super(
+            size: Vector2(20, 20), position: position, anchor: Anchor.topLeft) {
     debugMode = true;
   }
 

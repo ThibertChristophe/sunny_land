@@ -111,6 +111,7 @@ class Player extends SpriteAnimationGroupComponent<FoxState>
         }
         break;
       case FoxDirection.none:
+        velocity.x = 0;
       default:
         velocity.x = 0;
     }
