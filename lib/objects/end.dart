@@ -5,39 +5,27 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:sunny_land/sunnyland.dart';
 
-enum EndButtonState { active, inactive }
-
-class EndButton extends SpriteAnimationGroupComponent<EndButtonState>
-    with TapCallbacks, HasGameRef<SunnyLand> {
+class EndButton extends SpriteComponent
+    with TapCallbacks, HasVisibility, HasGameRef<SunnyLand> {
   EndButton({size, required position})
-      : super(
-            size: Vector2(20, 20), position: position, anchor: Anchor.topLeft) {
-    debugMode = true;
+      : super(size: size, position: position, anchor: Anchor.topLeft) {
+    //   debugMode = true;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
     if (game.fox.x >= x && game.fox.x <= x + width) {
-      current = EndButtonState.active;
+      isVisible = true;
     } else {
-      current = EndButtonState.inactive;
+      isVisible = false;
     }
   }
 
   @override
   FutureOr<void> onLoad() async {
-    animations = {
-      EndButtonState.active: await game.loadSpriteAnimation(
-        'gem.png',
-        SpriteAnimationData.sequenced(
-          amount: 5,
-          textureSize: Vector2.all(15),
-          stepTime: 0.1,
-        ),
-      ),
-    };
-    current = EndButtonState.inactive;
+    sprite = await game.loadSprite('touch.png');
+    isVisible = false;
     add(RectangleHitbox());
     return super.onLoad();
   }
