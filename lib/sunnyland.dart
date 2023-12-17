@@ -5,16 +5,9 @@ import 'package:flame/flame.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:flame_tiled/flame_tiled.dart';
-import 'package:sunny_land/actors/eagle.dart';
-import 'package:sunny_land/actors/frog.dart';
-import 'package:sunny_land/actors/opposum.dart';
 import 'package:sunny_land/hud.dart';
-import 'package:sunny_land/objects/end.dart';
-import 'package:sunny_land/objects/gem.dart';
-import 'package:sunny_land/obstacles/ground.dart';
-import 'package:sunny_land/obstacles/platform.dart';
 import 'package:sunny_land/actors/player.dart';
+import 'package:sunny_land/level.dart';
 
 class SunnyLand extends FlameGame
     with
@@ -22,43 +15,41 @@ class SunnyLand extends FlameGame
         HasKeyboardHandlerComponents,
         HasCollisionDetection {
   SunnyLand();
-  bool musicPlaying = false;
   late Hud hud;
-  late Player fox;
-  int gemsCollected = 0;
-  late TiledComponent myMap;
   late JoystickComponent joystick; // Joystick
+  late CameraComponent cam;
+  Player fox = Player();
+  List<String> levelNames = ['level1', 'level2'];
+  int currentLevelIndex = 0;
+  bool showControl = true;
+  bool musicPlaying = false;
+  int gemsCollected = 0;
 
   @override
   Future<void> onLoad() async {
+    _loadLevel();
+
     await super.onLoad();
-
-    addMusic();
-    addJoystick();
-
-    myMap = await TiledComponent.load("level1.tmx", Vector2.all(16));
-    world.add(myMap);
-
-    buildMap();
-
-    // 1280x800
-    camera.viewfinder.anchor = Anchor.topLeft;
-    camera.viewfinder.visibleGameSize = Vector2(500, 570);
-    camera.viewfinder.position = Vector2(0, 0);
-    camera.viewport.anchor = Anchor.topLeft;
-
-    camera.viewport.add(Hud());
+    if (musicPlaying) {
+      addMusic();
+    }
+    if (showControl) {
+      addJoystick();
+    }
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    //updateJoystick();
+
     // ajuste la camera quand on passe la moitié de l'écran
-    if (fox.position.x >= 500 && fox.position.x < 925) {
-      camera.viewfinder.position = Vector2(
-          camera.viewfinder.position.x + fox.velocity.x * dt,
-          camera.viewfinder.position.y);
+    if (fox.position.x >= 500 && fox.position.x < 860) {
+      cam.viewfinder.position = Vector2(
+          cam.viewfinder.position.x + fox.velocity.x * dt,
+          cam.viewfinder.position.y);
+    }
+    if (showControl) {
+//      updateJoystick();
     }
   }
 
@@ -67,83 +58,36 @@ class SunnyLand extends FlameGame
     fox.jump();
   }
 
+  void _loadLevel() {
+    Future.delayed(const Duration(seconds: 1), () {
+      Level world =
+          Level(levelName: levelNames[currentLevelIndex], player: fox);
+
+      cam = CameraComponent.withFixedResolution(
+          world: world, width: 1280, height: 800);
+      cam.viewfinder.anchor = Anchor.topLeft;
+      cam.viewfinder.position = Vector2(0, 20);
+      //cam.viewfinder.visibleGameSize = Vector2(500, 570);
+      cam.viewfinder.zoom = 1.4;
+      cam.viewport.anchor = Anchor.topLeft;
+      cam.viewport.add(Hud());
+
+      addAll([cam, world]);
+    });
+  }
+
 // =============================== MUSIC =========================
   void addMusic() {
     FlameAudio.bgm.initialize();
 
-    // if (!musicPlaying) {
-    //   FlameAudio.bgm.play('background.mp3', volume: .5);
-    //   musicPlaying = true;
-    // }
-  }
-
-  // =============================== MAP =========================
-  void buildMap() {
-    final grounds = myMap.tileMap.getLayer<ObjectGroup>('grounds');
-    final platforms = myMap.tileMap.getLayer<ObjectGroup>('platforms');
-
-    //final cherries = myMap.tileMap.getLayer<ObjectGroup>('cherry');
-    final gems = myMap.tileMap.getLayer<ObjectGroup>('gems');
-    final player = myMap.tileMap.getLayer<ObjectGroup>('player');
-    final enemies = myMap.tileMap.getLayer<ObjectGroup>('enemies');
-    final endButton = myMap.tileMap.getLayer<ObjectGroup>('endButton');
-
-    if (endButton != null) {
-      for (final obj in endButton.objects) {
-        world.add(EndButton(
-            size: Vector2(obj.width, obj.height),
-            position: Vector2(obj.x, obj.y)));
-      }
-    }
-
-    if (grounds != null) {
-      for (final obj in grounds.objects) {
-        world.add(Ground(
-            size: Vector2(obj.width, obj.height),
-            position: Vector2(obj.x, obj.y)));
-      }
-    }
-    if (platforms != null) {
-      for (final obj in platforms.objects) {
-        world.add(Platform(
-            size: Vector2(obj.width, obj.height),
-            position: Vector2(obj.x, obj.y)));
-      }
-    }
-    // for (final obj in cherries!.objects) {
-    //   add(Cherry(position: Vector2(obj.x, obj.y)));
-    // }
-    if (gems != null) {
-      for (final obj in gems.objects) {
-        world.add(Gem(position: Vector2(obj.x, obj.y)));
-      }
-    }
-    if (player != null) {
-      for (final obj in player.objects) {
-        world.add(fox = Player(position: Vector2(obj.x, obj.y)));
-      }
-    }
-    if (enemies != null) {
-      for (final obj in enemies.objects) {
-        switch (obj.class_) {
-          case 'frogs':
-            world.add(Frog(position: Vector2(obj.x, obj.y)));
-            break;
-          case 'oposum':
-            world.add(Oposum(position: Vector2(obj.x, obj.y)));
-            break;
-          case 'eagle':
-            world.add(Eagle(position: Vector2(obj.x, obj.y)));
-            break;
-        }
-      }
-    }
+    FlameAudio.bgm.play('background.mp3', volume: .5);
+    musicPlaying = true;
   }
 
   // =============================== JOYSTICK =========================
   void addJoystick() async {
     joystick = JoystickComponent(
-      priority: 10,
+      priority: 1000,
       knob: SpriteComponent(
         sprite: Sprite(
           await Flame.images.load('Knob.png'),
@@ -158,7 +102,7 @@ class SunnyLand extends FlameGame
       margin: const EdgeInsets.only(left: 64, bottom: 64),
     );
 
-    camera.viewport.add(joystick);
+    add(joystick);
   }
 
   void updateJoystick() {

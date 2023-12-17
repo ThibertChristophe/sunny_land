@@ -26,7 +26,7 @@ class Hud extends PositionComponent with HasGameRef<SunnyLand> {
         ),
       ),
       anchor: Anchor.center,
-      position: Vector2(game.size.x - 60, 35),
+      position: Vector2(game.size.x - 100, 35),
     );
     add(_scoreTextComponent);
 
@@ -35,7 +35,7 @@ class Hud extends PositionComponent with HasGameRef<SunnyLand> {
     add(
       SpriteComponent(
         sprite: gemSprite,
-        position: Vector2(game.size.x - 100, 35),
+        position: Vector2(game.size.x - 130, 35),
         size: Vector2.all(20),
         anchor: Anchor.center,
       ),

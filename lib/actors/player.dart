@@ -17,9 +17,9 @@ enum FoxState { running, jumping, falling, idle, hitted, sit }
 
 class Player extends SpriteAnimationGroupComponent<FoxState>
     with CollisionCallbacks, KeyboardHandler, HasGameRef<SunnyLand> {
-  Player({required super.position})
+  Player({super.position})
       : super(size: Vector2.all(33), anchor: Anchor.center) {
-    //debugMode = true;
+    debugMode = true;
   }
   double gravity = 7;
   Vector2 velocity = Vector2(0, 0);
