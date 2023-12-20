@@ -28,10 +28,10 @@ class SunnyLand extends FlameGame
 
   @override
   Future<void> onLoad() async {
+    await super.onLoad();
     fox = Player();
     _loadLevel();
 
-    await super.onLoad();
     if (musicPlaying) {
       addMusic();
     }
@@ -39,8 +39,6 @@ class SunnyLand extends FlameGame
 
   @override
   void update(double dt) {
-    super.update(dt);
-
     // ajuste la camera quand on passe la moitié de l'écran
     if (fox.position.x >= 500 && fox.position.x < 860) {
       cam.viewfinder.position = Vector2(
@@ -48,8 +46,9 @@ class SunnyLand extends FlameGame
           cam.viewfinder.position.y);
     }
     if (showControl) {
-//      updateJoystick();
+      updateJoystick();
     }
+    super.update(dt);
   }
 
   @override
@@ -68,7 +67,7 @@ class SunnyLand extends FlameGame
       cam.viewfinder.anchor = Anchor.topLeft;
       cam.viewfinder.position = Vector2(0, 20);
       //cam.viewfinder.visibleGameSize = Vector2(500, 570);
-      cam.viewfinder.zoom = 1.5;
+      cam.viewfinder.zoom = 1.4;
       cam.viewport.anchor = Anchor.topLeft;
       cam.viewport.add(Hud());
 
