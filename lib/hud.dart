@@ -43,7 +43,7 @@ class Hud extends PositionComponent with HasGameRef<SunnyLand> {
     );
 
     _levelTextComponent = TextComponent(
-      text: '${game.currentLevelIndex}',
+      text: 'Level ${game.currentLevelIndex + 1}',
       textRenderer: TextPaint(
         style: const TextStyle(
           fontSize: 26,
@@ -51,7 +51,7 @@ class Hud extends PositionComponent with HasGameRef<SunnyLand> {
         ),
       ),
       anchor: Anchor.center,
-      position: Vector2(100, 35),
+      position: Vector2(80, 35),
     );
     add(_levelTextComponent);
   }

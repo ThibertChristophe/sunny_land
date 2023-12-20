@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
-import 'package:flame/flame.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -29,9 +28,12 @@ class SunnyLand extends FlameGame
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    await images.loadAll([
+      'Joystick.png',
+      'Knob.png',
+    ]);
     fox = Player();
     _loadLevel();
-
     if (musicPlaying) {
       addMusic();
     }
@@ -39,6 +41,7 @@ class SunnyLand extends FlameGame
 
   @override
   void update(double dt) {
+    super.update(dt);
     // ajuste la camera quand on passe la moitié de l'écran
     if (fox.position.x >= 500 && fox.position.x < 860) {
       cam.viewfinder.position = Vector2(
@@ -48,7 +51,6 @@ class SunnyLand extends FlameGame
     if (showControl) {
       updateJoystick();
     }
-    super.update(dt);
   }
 
   @override
@@ -57,26 +59,21 @@ class SunnyLand extends FlameGame
   }
 
   void _loadLevel() {
-    Future.delayed(const Duration(seconds: 1), () {
-      fox = Player();
-      Level world =
-          Level(levelName: levelNames[currentLevelIndex], player: fox);
+    fox = Player();
+    Level world = Level(levelName: levelNames[currentLevelIndex], player: fox);
 
-      cam = CameraComponent.withFixedResolution(
-          world: world, width: 1280, height: 800);
-      cam.viewfinder.anchor = Anchor.topLeft;
-      cam.viewfinder.position = Vector2(0, 20);
-      //cam.viewfinder.visibleGameSize = Vector2(500, 570);
-      cam.viewfinder.zoom = 1.4;
-      cam.viewport.anchor = Anchor.topLeft;
-      cam.viewport.add(Hud());
+    cam = CameraComponent.withFixedResolution(
+        world: world, width: 1280, height: 800);
+    cam.viewfinder.anchor = Anchor.topLeft;
+    cam.viewfinder.position = Vector2(0, 20);
+    //cam.viewfinder.visibleGameSize = Vector2(500, 570);
+    cam.viewfinder.zoom = 1.4;
+    cam.viewport.anchor = Anchor.topLeft;
+    cam.viewport.add(Hud());
 
-      if (showControl) {
-        addJoystick();
-      }
-      cam.viewport.add(JumpButton());
-      addAll([cam, world]);
-    });
+    addJoystick();
+    cam.viewport.add(JumpButton());
+    addAll([cam, world]);
   }
 
   void loadNextLevel() {
@@ -101,19 +98,15 @@ class SunnyLand extends FlameGame
   }
 
   // =============================== JOYSTICK =========================
-  void addJoystick() async {
+  void addJoystick() {
     joystick = JoystickComponent(
       priority: 10,
       knob: SpriteComponent(
-        sprite: Sprite(
-          await Flame.images.load('Knob.png'),
-        ),
+        sprite: Sprite(images.fromCache("Knob.png")),
         priority: 10,
       ),
       background: SpriteComponent(
-        sprite: Sprite(
-          await Flame.images.load('Joystick.png'),
-        ),
+        sprite: Sprite(images.fromCache("Joystick.png")),
         priority: 10,
       ),
       knobRadius: 75,
