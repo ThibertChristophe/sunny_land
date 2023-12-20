@@ -14,6 +14,7 @@ class Hud extends PositionComponent with HasGameRef<SunnyLand> {
   });
 
   late TextComponent _scoreTextComponent;
+  late TextComponent _levelTextComponent;
 
   @override
   Future<void> onLoad() async {
@@ -40,7 +41,22 @@ class Hud extends PositionComponent with HasGameRef<SunnyLand> {
         anchor: Anchor.center,
       ),
     );
+
+    _levelTextComponent = TextComponent(
+        text: '${game.currentLevelIndex}',
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 26,
+          color: Color.fromRGBO(10, 10, 10, 1),
+        ),
+      ),
+      anchor: Anchor.center,
+      position: Vector2(100, 35),
+    );
+    add(_levelTextComponent);
+
   }
+
 
   @override
   void update(double dt) {

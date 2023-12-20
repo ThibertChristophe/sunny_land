@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -33,6 +32,7 @@ class EndButton extends SpriteComponent
 
   @override
   void onTapUp(TapUpEvent event) async {
+    game.loadNextLevel();
     super.onTapUp(event);
   }
 }

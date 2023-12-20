@@ -7,6 +7,7 @@ import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:sunny_land/hud.dart';
 import 'package:sunny_land/actors/player.dart';
+import 'package:sunny_land/jump_button.dart';
 import 'package:sunny_land/level.dart';
 
 class SunnyLand extends FlameGame
@@ -18,7 +19,7 @@ class SunnyLand extends FlameGame
   late Hud hud;
   late JoystickComponent joystick; // Joystick
   late CameraComponent cam;
-  Player fox = Player();
+  late Player fox;
   List<String> levelNames = ['level1', 'level2'];
   int currentLevelIndex = 0;
   bool showControl = true;
@@ -27,14 +28,12 @@ class SunnyLand extends FlameGame
 
   @override
   Future<void> onLoad() async {
+    fox = Player();
     _loadLevel();
 
     await super.onLoad();
     if (musicPlaying) {
       addMusic();
-    }
-    if (showControl) {
-      addJoystick();
     }
   }
 
@@ -60,6 +59,7 @@ class SunnyLand extends FlameGame
 
   void _loadLevel() {
     Future.delayed(const Duration(seconds: 1), () {
+      fox = Player();
       Level world =
           Level(levelName: levelNames[currentLevelIndex], player: fox);
 
@@ -68,12 +68,29 @@ class SunnyLand extends FlameGame
       cam.viewfinder.anchor = Anchor.topLeft;
       cam.viewfinder.position = Vector2(0, 20);
       //cam.viewfinder.visibleGameSize = Vector2(500, 570);
-      cam.viewfinder.zoom = 1.4;
+      cam.viewfinder.zoom = 1.5;
       cam.viewport.anchor = Anchor.topLeft;
       cam.viewport.add(Hud());
 
+      if (showControl) {
+        addJoystick();
+      }
+      cam.viewport.add(JumpButton());
       addAll([cam, world]);
     });
+  }
+
+  void loadNextLevel() {
+    removeWhere((component) => component is Level);
+
+    if (currentLevelIndex < levelNames.length - 1) {
+      //     currentLevelIndex++;
+      _loadLevel();
+    } else {
+      // no more levels
+      currentLevelIndex = 0;
+      _loadLevel();
+    }
   }
 
 // =============================== MUSIC =========================
@@ -87,22 +104,24 @@ class SunnyLand extends FlameGame
   // =============================== JOYSTICK =========================
   void addJoystick() async {
     joystick = JoystickComponent(
-      priority: 1000,
+      priority: 10,
       knob: SpriteComponent(
         sprite: Sprite(
           await Flame.images.load('Knob.png'),
         ),
+        priority: 10,
       ),
       background: SpriteComponent(
         sprite: Sprite(
           await Flame.images.load('Joystick.png'),
         ),
+        priority: 10,
       ),
       knobRadius: 75,
-      margin: const EdgeInsets.only(left: 64, bottom: 64),
+      margin: const EdgeInsets.only(left: 100, bottom: 128),
     );
 
-    add(joystick);
+    cam.viewport.add(joystick);
   }
 
   void updateJoystick() {
