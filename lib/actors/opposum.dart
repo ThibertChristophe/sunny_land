@@ -21,7 +21,7 @@ class Oposum extends SpriteAnimationGroupComponent<EnemyState>
   //Vector2 velocity = Vector2(0, 0);
 
   double gravity = 1.5;
-  double moveSpeed = 50;
+  double moveSpeed = 30;
   OposumDirection horizontalDirection = OposumDirection.none;
   bool onGround = false;
 

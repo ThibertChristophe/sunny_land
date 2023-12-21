@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:flame/components.dart';
@@ -43,7 +42,7 @@ class SunnyLand extends FlameGame
   void update(double dt) {
     super.update(dt);
     // ajuste la camera quand on passe la moitié de l'écran
-    if (fox.position.x >= 500 && fox.position.x < 860) {
+    if (fox.position.x >= 400 && fox.position.x < 550) {
       cam.viewfinder.position = Vector2(
           cam.viewfinder.position.x + fox.velocity.x * dt,
           cam.viewfinder.position.y);
@@ -61,13 +60,12 @@ class SunnyLand extends FlameGame
   void _loadLevel() {
     fox = Player();
     Level world = Level(levelName: levelNames[currentLevelIndex], player: fox);
-
-    cam = CameraComponent.withFixedResolution(
-        world: world, width: 1280, height: 800);
+    cam = CameraComponent(world: world);
     cam.viewfinder.anchor = Anchor.topLeft;
     cam.viewfinder.position = Vector2(0, 20);
     //cam.viewfinder.visibleGameSize = Vector2(500, 570);
-    cam.viewfinder.zoom = 1.4;
+    cam.viewfinder.zoom = 2;
+    //cam.viewport.size = Vector2(size.x, size.y);
     cam.viewport.anchor = Anchor.topLeft;
     cam.viewport.add(Hud());
 
@@ -80,7 +78,7 @@ class SunnyLand extends FlameGame
     removeWhere((component) => component is Level);
 
     if (currentLevelIndex < levelNames.length - 1) {
-      //     currentLevelIndex++;
+      currentLevelIndex++;
       _loadLevel();
     } else {
       // no more levels
