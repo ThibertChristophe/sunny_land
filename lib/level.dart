@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame/parallax.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sunny_land/sunnyland.dart';
 import 'package:sunny_land/objects/end.dart';
 import 'package:sunny_land/objects/gem.dart';
@@ -23,6 +25,20 @@ class Level extends World with HasGameRef<SunnyLand> {
   FutureOr<void> onLoad() async {
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
     add(level);
+    ParallaxComponent sky = await ParallaxComponent.load(
+      [
+        ParallaxImageData('back.png'),
+        ParallaxImageData('middle.png'),
+      ],
+      alignment: Alignment.bottomCenter,
+      fill: LayerFill.none,
+      repeat: ImageRepeat.repeat,
+      baseVelocity: Vector2(game.cam.viewfinder.position.x, 0),
+      velocityMultiplierDelta: Vector2(2, 1),
+      priority: -1,
+    );
+
+    add(sky);
     _addCollision();
     _spawnObject();
 

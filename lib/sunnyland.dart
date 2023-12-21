@@ -30,6 +30,8 @@ class SunnyLand extends FlameGame
     await images.loadAll([
       'Joystick.png',
       'Knob.png',
+      'middle2.png',
+      'back.png',
     ]);
     fox = Player();
     _loadLevel();
