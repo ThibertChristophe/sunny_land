@@ -28,12 +28,11 @@ class Level extends World with HasGameRef<SunnyLand> {
     ParallaxComponent sky = await ParallaxComponent.load(
       [
         ParallaxImageData('back.png'),
-        ParallaxImageData('middle.png'),
       ],
-      alignment: Alignment.bottomCenter,
-      fill: LayerFill.none,
+      size: Vector2(game.size.x, game.size.y / 2),
+      alignment: Alignment.topLeft,
       repeat: ImageRepeat.repeat,
-      baseVelocity: Vector2(game.cam.viewfinder.position.x, 0),
+      baseVelocity: Vector2(5, 0),
       velocityMultiplierDelta: Vector2(2, 1),
       priority: -1,
     );
