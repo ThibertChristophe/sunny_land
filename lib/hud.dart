@@ -42,16 +42,26 @@ class Hud extends PositionComponent with HasGameRef<SunnyLand> {
       ),
     );
 
+    final levelSprite = await game.loadSprite('Level.png');
+
+    add(
+      SpriteComponent(
+        sprite: levelSprite,
+        position: Vector2(70, 35),
+        size: Vector2.all(90),
+        anchor: Anchor.center,
+      ),
+    );
     _levelTextComponent = TextComponent(
-      text: 'Level ${game.currentLevelIndex + 1}',
+      text: '${game.currentLevelIndex + 1}',
       textRenderer: TextPaint(
         style: const TextStyle(
-          fontSize: 26,
+          fontSize: 45,
           color: Color.fromRGBO(10, 10, 10, 1),
         ),
       ),
       anchor: Anchor.center,
-      position: Vector2(80, 35),
+      position: Vector2(130, 35),
     );
     add(_levelTextComponent);
   }

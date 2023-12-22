@@ -32,7 +32,7 @@ class MainMenu extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    width: 400,
+                    width: 600,
                     child: Image(
                       image: AssetImage('assets/images/titre.png'),
                       fit: BoxFit.cover,
@@ -40,7 +40,7 @@ class MainMenu extends StatelessWidget {
                   ).animate().scale(),
                   const SizedBox(height: 50),
                   SizedBox(
-                    width: 120,
+                    width: 150,
                     child: const Image(
                       image: AssetImage('assets/images/playy.png'),
                       fit: BoxFit.cover,

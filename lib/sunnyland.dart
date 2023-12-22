@@ -18,7 +18,7 @@ class SunnyLand extends FlameGame
   late JoystickComponent joystick; // Joystick
   late CameraComponent cam;
   late Player fox;
-  List<String> levelNames = ['level1', 'level2'];
+  List<String> levelNames = ['level1', 'level2', 'level3'];
   int currentLevelIndex = 0;
   bool showControl = true;
   bool musicPlaying = false;
@@ -44,7 +44,7 @@ class SunnyLand extends FlameGame
   void update(double dt) {
     super.update(dt);
     // ajuste la camera quand on passe la moitié de l'écran
-    if (fox.position.x >= 400 && fox.position.x < 550) {
+    if (fox.position.x >= 400 && fox.position.x < 710) {
       cam.viewfinder.position = Vector2(
           cam.viewfinder.position.x + fox.velocity.x * dt,
           cam.viewfinder.position.y);
