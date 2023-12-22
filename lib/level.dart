@@ -23,8 +23,10 @@ class Level extends World with HasGameRef<SunnyLand> {
 
   @override
   FutureOr<void> onLoad() async {
+    // Loading de la map en fonction du numero de niveau
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
     add(level);
+    // Fond en parallax
     ParallaxComponent sky = await ParallaxComponent.load(
       [
         ParallaxImageData('back.png'),
@@ -36,14 +38,15 @@ class Level extends World with HasGameRef<SunnyLand> {
       velocityMultiplierDelta: Vector2(2, 1),
       priority: -1,
     );
-
     add(sky);
+
     _addCollision();
     _spawnObject();
 
     return super.onLoad();
   }
 
+  /// Creation des collision de la map
   void _addCollision() {
     final grounds = level.tileMap.getLayer<ObjectGroup>('grounds');
     final platforms = level.tileMap.getLayer<ObjectGroup>('platforms');
@@ -64,6 +67,7 @@ class Level extends World with HasGameRef<SunnyLand> {
     }
   }
 
+  /// Creation des objets de la map (gem, ennemi, joueur, etc)
   void _spawnObject() {
     final gems = level.tileMap.getLayer<ObjectGroup>('gems');
     final players = level.tileMap.getLayer<ObjectGroup>('player');

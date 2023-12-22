@@ -59,6 +59,7 @@ class SunnyLand extends FlameGame
     fox.jump();
   }
 
+  /// Chargement du Level, init du Player, initialisation de la camera, ajout du joystickm du hud et bouton jump
   void _loadLevel() {
     fox = Player();
     Level world = Level(levelName: levelNames[currentLevelIndex], player: fox);
@@ -76,6 +77,7 @@ class SunnyLand extends FlameGame
     addAll([cam, world]);
   }
 
+  /// Delete le Level en cours et charge le suivant suivant l'index
   void loadNextLevel() {
     removeWhere((component) => component is Level);
 
