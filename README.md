@@ -1,6 +1,7 @@
-# sunny_land
+# Sunny Land game
 
-2D Plat-form game in Flame.
+2D Platform game with Flame (Flutter).
 
 ## In progress
 
+Free assets from itch.io
