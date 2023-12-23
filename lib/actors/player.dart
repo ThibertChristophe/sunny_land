@@ -19,7 +19,7 @@ class Player extends SpriteAnimationGroupComponent<FoxState>
     with CollisionCallbacks, KeyboardHandler, HasGameRef<SunnyLand> {
   Player({super.position})
       : super(size: Vector2.all(33), anchor: Anchor.center) {
-    //debugMode = true;
+    debugMode = true;
   }
   double gravity = 7;
   Vector2 velocity = Vector2(0, 0);
@@ -103,6 +103,9 @@ class Player extends SpriteAnimationGroupComponent<FoxState>
       case FoxDirection.left:
         if (!collided || collidedDirection == FoxDirection.right) {
           if (position.x >= size.x) velocity.x = -1 * moveSpeed;
+        }
+        if (position.x <= 10) {
+          velocity.x = 0;
         }
         break;
       case FoxDirection.right:

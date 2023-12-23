@@ -46,6 +46,27 @@ class Level extends World with HasGameRef<SunnyLand> {
     return super.onLoad();
   }
 
+  @override
+  void update(double dt) {
+    super.update(dt);
+    // Cas où le joueur tombe dans le vide
+    // On le fait respawn au debut du niveau
+    if (player.position.y >= game.size.y) {
+      remove(player);
+      // On reprend sa position d'origine sur la map
+      final players = level.tileMap.getLayer<ObjectGroup>('player');
+      if (players != null) {
+        for (final obj in players.objects) {
+          player.position = Vector2(obj.x, obj.y);
+          player.scale.x = 1;
+          add(player);
+          // On replace la camera au debut du niveau
+          game.cam.viewfinder.position = Vector2(0, 20);
+        }
+      }
+    }
+  }
+
   /// Creation des collision de la map
   void _addCollision() {
     final grounds = level.tileMap.getLayer<ObjectGroup>('grounds');
