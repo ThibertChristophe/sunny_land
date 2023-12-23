@@ -210,6 +210,7 @@ class Player extends SpriteAnimationGroupComponent<FoxState>
         // on tappe sur le bas du sol
         if (inter1.y == other.height + other.y) {
           velocity.y = 0;
+          onGround = false;
         }
       }
     }
