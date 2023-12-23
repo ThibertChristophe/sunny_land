@@ -60,7 +60,7 @@ class Hud extends PositionComponent with HasGameRef<SunnyLand> {
       SpriteComponent(
         sprite: levelNumberSprite,
         position: Vector2(135, 35),
-        size: Vector2.all(50),
+        size: Vector2.all(80),
         anchor: Anchor.center,
       ),
     );
