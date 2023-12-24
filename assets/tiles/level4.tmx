@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="60" height="27" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="36">
+<map version="1.8" tiledversion="1.8.0" orientation="orthogonal" renderorder="right-down" width="60" height="27" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="38">
  <tileset firstgid="1" name="props" tilewidth="16" tileheight="16" tilecount="364" columns="26">
   <image source="props.png" width="416" height="224"/>
  </tileset>
@@ -16,11 +16,11 @@
   <image source="tree-house.png" width="119" height="144"/>
  </tileset>
  <objectgroup id="6" name="grounds">
-  <object id="24" name="ground" type="ground" x="326" y="160" width="202" height="16"/>
   <object id="26" name="ground" type="ground" x="0" y="224" width="960" height="189"/>
   <object id="31" name="ground" type="ground" x="944" y="1" width="16" height="223"/>
-  <object id="34" name="ground" type="ground" x="304" y="160" width="32" height="132"/>
   <object id="35" name="ground" type="ground" x="272" y="192" width="64" height="64"/>
+  <object id="36" name="ground" type="ground" x="304" y="160" width="32" height="131"/>
+  <object id="37" name="ground" type="ground" x="352" y="160" width="176" height="16"/>
  </objectgroup>
  <objectgroup id="9" name="gems">
   <object id="14" name="gems" type="gems" x="160" y="176" width="16" height="16"/>
@@ -34,7 +34,7 @@
   <object id="32" name="gems" x="352" y="192" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="10" name="endButton">
-  <object id="19" name="endButton" type="endButton" x="897" y="160" width="32" height="32"/>
+  <object id="19" name="endButton" type="endButton" x="888" y="144" width="48" height="48"/>
  </objectgroup>
  <objectgroup id="7" name="player">
   <object id="11" name="player" type="player" x="48" y="192" width="32" height="32"/>
@@ -87,7 +87,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,251,252,1170,1170,1170,1170,1170,1170,1170,1170,1170,1170,1170,1172,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,251,252,0,1170,1170,1170,1170,1170,1170,1170,1170,1170,1170,1172,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,277,278,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,251,252,251,252,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,277,278,277,278,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

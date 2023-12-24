@@ -33,7 +33,7 @@
   <object id="32" name="gems" x="336" y="176" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="10" name="endButton">
-  <object id="19" name="endButton" type="endButton" x="897" y="160" width="32" height="32"/>
+  <object id="19" name="endButton" type="endButton" x="888" y="144" width="48" height="48"/>
  </objectgroup>
  <objectgroup id="7" name="player">
   <object id="11" name="player" type="player" x="48" y="192" width="32" height="32"/>
