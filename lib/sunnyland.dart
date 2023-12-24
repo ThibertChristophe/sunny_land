@@ -57,10 +57,10 @@ class SunnyLand extends FlameGame
     }
   }
 
-  @override
-  void onDoubleTapDown(DoubleTapDownEvent event) {
-    fox.jump();
-  }
+  //@override
+  //void onDoubleTapDown(DoubleTapDownEvent event) {
+  // fox.jump();
+  //}
 
   /// Chargement du Level, init du Player, initialisation de la camera, ajout du joystickm du hud et bouton jump
   void _loadLevel() {
@@ -109,13 +109,15 @@ class SunnyLand extends FlameGame
       knob: SpriteComponent(
         sprite: Sprite(images.fromCache("Knob.png")),
         priority: 10,
+        size: Vector2(75, 75),
       ),
       background: SpriteComponent(
         sprite: Sprite(images.fromCache("Joystick.png")),
         priority: 10,
+        size: Vector2(150, 150),
       ),
       knobRadius: 75,
-      margin: const EdgeInsets.only(left: 100, bottom: 128),
+      margin: const EdgeInsets.only(left: 50, bottom: 40),
     );
 
     cam.viewport.add(joystick);

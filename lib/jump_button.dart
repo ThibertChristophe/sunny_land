@@ -12,11 +12,11 @@ class JumpButton extends SpriteComponent
   FutureOr<void> onLoad() async {
     sprite = Sprite(await Flame.images.load('jumpButton.png'));
     position = Vector2(
-      game.size.x - 128 - 100,
-      game.size.y - 128 - 128,
+      game.size.x - 128 - 75,
+      game.size.y - 128 - 75,
     );
     priority = 10;
-    size = Vector2(128, 128);
+    size = Vector2(150, 150);
     return super.onLoad();
   }
 
