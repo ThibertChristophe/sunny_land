@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:sunny_land/objects/pause.dart';
 import 'package:sunny_land/sunnyland.dart';
 
 class Hud extends PositionComponent with HasGameRef<SunnyLand> {
@@ -17,6 +18,13 @@ class Hud extends PositionComponent with HasGameRef<SunnyLand> {
 
   @override
   Future<void> onLoad() async {
+    // Bouton pause
+    add(
+      PauseButton(
+        position: Vector2(game.size.x - 150, 35),
+        size: Vector2.all(64),
+      ),
+    );
     // Gem sprite
     final gemSprite = await game.loadSprite('gem-5.png');
     add(
