@@ -21,12 +21,13 @@ class SunnyLand extends FlameGame
   List<String> levelNames = ['level1', 'level2', 'level3', 'level4'];
   int currentLevelIndex = 0;
   bool showControl = true;
-  bool musicPlaying = false;
+  bool musicPlaying = true;
   int gemsCollected = 0;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    await FlameAudio.audioCache.load('coin.wav');
     await images.loadAll([
       'Joystick.png',
       'Knob.png',
@@ -97,7 +98,7 @@ class SunnyLand extends FlameGame
   void addMusic() {
     FlameAudio.bgm.initialize();
 
-    FlameAudio.bgm.play('background.mp3', volume: .5);
+    FlameAudio.bgm.play('background.mp3', volume: .3);
     musicPlaying = true;
   }
 
