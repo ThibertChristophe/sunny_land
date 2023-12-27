@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:sunny_land/sunnyland.dart';
@@ -19,8 +18,12 @@ class PauseButton extends SpriteComponent
   @override
   void onTapUp(TapUpEvent event) async {
     super.onTapUp(event);
-
-    game.pauseEngine();
-    // Faire apparaitre loverlay
+    if (game.overlays.isActive('PauseMenu')) {
+      game.overlays.remove('PauseMenu');
+      game.resumeEngine();
+    } else {
+      game.overlays.add('PauseMenu');
+      game.pauseEngine();
+    }
   }
 }
