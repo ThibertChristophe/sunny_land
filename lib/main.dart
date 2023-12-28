@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:sunny_land/main_menu.dart';
 import 'package:sunny_land/pause_menu.dart';
 import 'package:sunny_land/sunnyland.dart';
+import 'package:sunny_land/transition_level.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,8 +17,9 @@ void main() {
       overlayBuilderMap: {
         'MainMenu': (_, game) => MainMenu(game: game),
         'PauseMenu': (_, game) => PauseMenu(game: game),
+        'TransitionLevel': (_, game) => TransitionLevel(game: game),
       },
-      initialActiveOverlays: const ['PauseMenu'],
+      initialActiveOverlays: const ['MainMenu'],
     ),
   );
 }

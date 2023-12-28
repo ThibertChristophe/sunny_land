@@ -24,7 +24,7 @@ class Ground extends PositionComponent with HasGameRef<SunnyLand> {
 
   @override
   FutureOr<void> onLoad() {
-    add(RectangleHitbox());
+    add(RectangleHitbox(collisionType: CollisionType.passive));
     return super.onLoad();
   }
 }

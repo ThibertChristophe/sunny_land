@@ -32,7 +32,13 @@ class EndButton extends SpriteComponent
 
   @override
   void onTapUp(TapUpEvent event) async {
+    game.overlays.add("TransitionLevel");
+    game.pauseEngine();
     game.loadNextLevel();
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      game.overlays.remove("TransitionLevel");
+      game.resumeEngine();
+    });
     super.onTapUp(event);
   }
 }

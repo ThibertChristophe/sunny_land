@@ -61,7 +61,15 @@ class PauseMenu extends StatelessWidget {
                                 backgroundColor: const Color(0xffffba00),
                                 textStyle: const TextStyle(
                                     fontSize: 25, fontWeight: FontWeight.bold)),
-                            onPressed: () {},
+                            onPressed: () {
+                              // On change notre layout
+                              game.overlays.remove('PauseMenu');
+                              game.overlays.add('MainMenu');
+                              // On change notre niveau courant par 99 pour ne pas passer au niveau suivant
+                              game.currentLevelIndex = 99;
+                              // On change de niveau mais repart a zero
+                              game.loadNextLevel();
+                            },
                             child: const Text("Quitter"),
                           ),
                         ],
