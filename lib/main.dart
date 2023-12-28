@@ -17,7 +17,7 @@ void main() {
         'MainMenu': (_, game) => MainMenu(game: game),
         'PauseMenu': (_, game) => PauseMenu(game: game),
       },
-      initialActiveOverlays: const ['MainMenu'],
+      initialActiveOverlays: const ['PauseMenu'],
     ),
   );
 }
