@@ -40,10 +40,10 @@ class MainMenu extends StatelessWidget {
                   ).animate().scale(),
                   const SizedBox(height: 50),
                   SizedBox(
-                    width: 150,
+                    width: 200,
                     child: const Image(
                       image: AssetImage('assets/images/playy.png'),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     )
                         .animate(
                             onPlay: (controller) => controller

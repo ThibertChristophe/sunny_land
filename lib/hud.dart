@@ -22,7 +22,7 @@ class Hud extends PositionComponent with HasGameRef<SunnyLand> {
     add(
       PauseButton(
         position: Vector2(game.size.x - 150, 35),
-        size: Vector2.all(64),
+        size: Vector2.all(85),
       ),
     );
     // Gem sprite

@@ -35,7 +35,7 @@ class EndButton extends SpriteComponent
     game.overlays.add("TransitionLevel");
     game.pauseEngine();
     game.loadNextLevel();
-    Future.delayed(const Duration(milliseconds: 2000), () {
+    Future.delayed(const Duration(milliseconds: 1500), () {
       game.overlays.remove("TransitionLevel");
       game.resumeEngine();
     });
